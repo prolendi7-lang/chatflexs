@@ -29,13 +29,11 @@ body{background:var(--bg);color:var(--txt);font:16px/1.4 Inter,system-ui,sans-se
 button,input,textarea{font:inherit;color:inherit}
 button{border:0;background:none;cursor:pointer;padding:0;color:inherit}
 input,textarea{background:transparent;border:0;outline:none;width:100%}
-.av{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff}
+.av{width:48px;height:48px;border-radius:50%;object-fit:cover;flex:none;display:flex;align-items:center;justify-content:center;font-weight:600;color:#fff;overflow:hidden}
 .av.sm{width:34px;height:34px;font-size:14px}
 .av.xs{width:28px;height:28px;font-size:12px}
 .ico{width:22px;height:22px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .ico.sm{width:18px;height:18px}
-
-/* Scrollbar — gizli, hover'da belirir */
 *{scrollbar-width:thin;scrollbar-color:transparent transparent}
 *:hover{scrollbar-color:rgba(150,150,150,.4) transparent}
 ::-webkit-scrollbar{width:6px;height:6px}
@@ -47,16 +45,19 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .scroll-hide::-webkit-scrollbar{display:none}
 .scroll-hide{scrollbar-width:none}
 
-/* Toast */
+#netbar{position:fixed;top:0;left:0;right:0;background:#ef4444;color:#fff;text-align:center;font-size:13px;padding:6px;z-index:99999;transform:translateY(-100%);transition:transform .3s}
+#netbar.on{transform:none}
+
 #toasts{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
-.toast{background:var(--sidebar);border:1px solid var(--line);border-left:4px solid var(--tg-blue);padding:12px 16px;border-radius:12px;min-width:220px;max-width:340px;box-shadow:0 8px 24px #0005;animation:slideIn .25s ease;pointer-events:auto}
+.toast{background:var(--sidebar);border:1px solid var(--line);border-left:4px solid var(--tg-blue);padding:12px 16px;border-radius:12px;min-width:220px;max-width:340px;box-shadow:0 8px 24px #0005;animation:slideIn .25s ease;pointer-events:auto;cursor:pointer}
 .toast.err{border-left-color:#ef4444}
+.toast.info{border-left-color:#f59e0b}
 @keyframes slideIn{from{transform:translateX(120%);opacity:0}to{transform:none;opacity:1}}
 @keyframes popIn{from{transform:scale(.94);opacity:0}to{transform:none;opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-/* Auth */
 #auth{height:100%;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg)}
 #auth .card{background:var(--sidebar);padding:32px 24px;border-radius:24px;width:100%;max-width:380px;display:grid;gap:14px;box-shadow:0 12px 48px #0005;border:1px solid var(--line)}
 #auth .logo{width:72px;height:72px;border-radius:50%;background:var(--tg-blue);display:flex;align-items:center;justify-content:center;margin:0 auto}
@@ -68,12 +69,10 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .btn:hover{background:var(--tg-blue-hover)}
 .btn:active{transform:scale(.98)}
 .btn.ghost{background:var(--hover);color:var(--txt)}
-.btn.ghost:hover{background:var(--line)}
+.btn.danger{background:#ef4444}
 .link{color:var(--tg-blue);font-size:14px;text-align:center;padding:6px}
-.link:hover{color:var(--tg-blue-hover)}
 #err{color:#ff8a8a;font-size:13px;min-height:18px;text-align:center}
 
-/* App */
 #app{height:100%;display:flex;overflow:hidden}
 #side{width:100%;max-width:380px;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;flex-shrink:0}
 #side .head{padding:10px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
@@ -87,20 +86,17 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .room{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:12px;width:100%;text-align:left;transition:background .12s;color:var(--txt)}
 .room:hover{background:var(--hover)}
 .room.on{background:var(--tg-blue);color:#fff}
-.room.on .rname,.room.on .rprev,.room.on .rtime{color:#fff}
-.room.on .rprev{opacity:.85}
-.room.on .rtime{opacity:.75}
+.room.on .rprev,.room.on .rtime{color:#fff;opacity:.85}
 .room .rmain{flex:1;min-width:0}
-.room .rname{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.room .rname{font-weight:600;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;gap:4px;align-items:center}
+.room .rname .lock{font-size:11px}
 .room .rprev{font-size:13.5px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
 .room .rmeta{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
 .room .rtime{font-size:11.5px;color:var(--mut)}
 .room .badge{background:var(--tg-blue);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center}
 .room.on .badge{background:#fff;color:var(--tg-blue)}
-.room .online-dot{width:8px;height:8px;background:#4ade80;border-radius:50%;box-shadow:0 0 0 2px var(--sidebar)}
 .empty-rooms{padding:30px 20px;text-align:center;color:var(--mut);font-size:14px}
 
-/* Chat */
 #chat{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
 [data-theme="dark"] #chat{background:#0a0a0a}
 [data-theme="light"] #chat{background:#e6ebee}
@@ -108,25 +104,28 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 #head .back{padding:8px;margin-left:-6px;border-radius:50%;transition:background .15s}
 #head .back:hover{background:var(--hover)}
 #head .info{flex:1;min-width:0;cursor:pointer}
-#head .htitle{font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#head .htitle{font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;gap:5px;align-items:center}
 #head .hsub{font-size:12.5px;color:var(--mut);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #head .hsub.online{color:var(--tg-blue)}
 #head .hbtns{display:flex;gap:2px}
-#head .hbtns button{padding:8px;border-radius:50%;color:var(--mut);transition:background .15s,color .15s}
+#head .hbtns button{padding:8px;border-radius:50%;color:var(--mut);transition:background .15s,color .15s;position:relative}
 #head .hbtns button:hover{background:var(--hover);color:var(--txt)}
+#head .hbtns .badge-mini{position:absolute;top:2px;right:2px;background:var(--tg-blue);color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:0 4px;min-width:14px;text-align:center}
 
-#pinbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--sidebar);border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer}
+#pinbar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--sidebar);border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer;transition:background .15s}
+#pinbar:hover{background:var(--hover)}
 #pinbar .pincontent{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #pinbar .pincontent b{color:var(--tg-blue)}
 
-#msgs{flex:1;overflow-y:auto;padding:12px 6px 8px;display:flex;flex-direction:column;gap:1px;scroll-behavior:smooth}
+#msgs{flex:1;overflow-y:auto;padding:12px 6px 8px;display:flex;flex-direction:column;gap:1px;scroll-behavior:smooth;position:relative}
 #msgs.drag{background:linear-gradient(180deg,transparent,rgba(42,171,238,.13))}
 
 .daydiv{display:flex;justify-content:center;margin:14px 0 6px}
 .daydiv span{background:rgba(0,0,0,.18);color:#fff;font-size:12px;font-weight:500;padding:3px 12px;border-radius:14px;backdrop-filter:blur(6px)}
 [data-theme="light"] .daydiv span{background:rgba(0,0,0,.12)}
 
-.m{display:flex;gap:8px;padding:1px 8px;max-width:100%;animation:msgIn .2s ease}
+.m{display:flex;gap:8px;padding:1px 8px;max-width:100%;animation:msgIn .2s ease;position:relative;transition:transform .2s}
+.m.swiping{transition:none}
 .m.me{flex-direction:row-reverse}
 .m.grouped{margin-top:-2px}
 .m .mav{width:34px;flex-shrink:0;align-self:flex-end}
@@ -138,11 +137,18 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .m.grouped.me .mbub{border-top-right-radius:14px}
 .m .who{font-size:13px;color:var(--tg-blue);font-weight:600;margin-bottom:2px}
 .m .content{font-size:15px;line-height:1.42;white-space:pre-wrap;word-break:break-word}
+.m .enc-tag{color:var(--tg-blue);font-size:11px;font-weight:600;margin-right:4px;opacity:.8}
 .m .edited{font-size:10.5px;font-style:italic;opacity:.7;margin-left:4px}
-.m .img{max-width:100%;max-height:320px;border-radius:10px;margin-top:4px;display:block;cursor:pointer}
+.m .img{max-width:100%;max-height:320px;border-radius:10px;margin-top:4px;display:block;cursor:pointer;background:var(--hover)}
 .m.stk .mbub{background:none!important;box-shadow:none;padding:0}
 .m.stk .img{max-width:160px;max-height:160px;margin-top:0}
 .m .file{display:inline-flex;align-items:center;gap:6px;color:var(--tg-blue);text-decoration:underline;margin-top:4px;font-size:14px}
+.m .voice{display:flex;align-items:center;gap:10px;margin-top:4px;min-width:220px}
+.m .voice button{width:36px;height:36px;border-radius:50%;background:var(--tg-blue);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.m .voice .wave{flex:1;height:24px;position:relative}
+.m .voice .wave .bars{display:flex;align-items:center;gap:2px;height:100%}
+.m .voice .wave .bar{width:2px;background:var(--tg-blue);border-radius:1px;opacity:.5}
+.m .voice .dur{font-size:12px;color:var(--mut);min-width:32px;text-align:right}
 .m .mtinfo{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;color:var(--mut);margin-top:3px;min-height:14px}
 .m.me .mtinfo{color:rgba(42,171,238,.85)}
 [data-theme="light"] .m.me .mtinfo{color:rgba(0,80,120,.7)}
@@ -162,7 +168,9 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .m .hoveract{position:absolute;top:-8px;display:none;gap:1px;padding:3px;background:var(--sidebar);border:1px solid var(--line);border-radius:20px;box-shadow:0 4px 12px #0004;z-index:5}
 .m .hoveract.left{right:calc(100% + 8px)}
 .m .hoveract.right{left:calc(100% + 8px)}
-.m:hover .hoveract{display:flex}
+@media(hover:hover){
+  .m:hover .hoveract{display:flex}
+}
 .m .hoveract button{padding:6px;border-radius:50%;color:var(--mut);transition:background .15s,color .15s}
 .m .hoveract button:hover{background:var(--hover);color:var(--txt)}
 .m .hoveract button.del:hover{color:#ef4444;background:rgba(239,68,68,.15)}
@@ -171,6 +179,9 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .m.me .epick{align-self:flex-end}
 .m .epick button{font-size:22px;line-height:1;padding:3px;border-radius:50%;transition:transform .1s}
 .m .epick button:hover{transform:scale(1.25)}
+
+.m .reply-hint{position:absolute;left:-40px;top:50%;transform:translateY(-50%);color:var(--tg-blue);opacity:0;transition:opacity .15s}
+.m.swiping .reply-hint{opacity:1}
 
 #empty{margin:auto;text-align:center;color:var(--mut);padding:40px 20px}
 #empty .big{width:96px;height:96px;border-radius:50%;background:rgba(42,171,238,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
@@ -186,13 +197,23 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 #replybar .x{padding:6px;border-radius:50%;color:var(--mut)}
 #replybar .x:hover{background:var(--hover)}
 
+#recbar{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sidebar);border-top:1px solid var(--line);animation:msgIn .15s}
+#recbar .dot{width:12px;height:12px;background:#ef4444;border-radius:50%;animation:pulse 1s infinite}
+#recbar .time{font-weight:600;color:#ef4444;font-variant-numeric:tabular-nums}
+#recbar .hint{flex:1;color:var(--mut);font-size:13px}
+#recbar .stop{padding:8px 16px;background:var(--tg-blue);color:#fff;border-radius:12px;font-size:14px;font-weight:600}
+#recbar .cancel{padding:8px 12px;color:#ef4444;font-size:14px}
+
 #epicker,#spanel{padding:10px 14px;background:var(--sidebar);border-top:1px solid var(--line);animation:msgIn .15s}
-#epicker{display:flex;flex-wrap:wrap;gap:4px}
+#epicker{display:flex;flex-wrap:wrap;gap:4px;max-height:200px;overflow-y:auto}
 #epicker button{font-size:24px;padding:4px;border-radius:8px;transition:transform .1s}
 #epicker button:hover{transform:scale(1.2);background:var(--hover)}
 #spanel .shead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:14px;font-weight:600}
 #spanel .shead button{font-size:13px;color:var(--tg-blue);padding:4px 8px;border-radius:8px;background:var(--hover)}
-#sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;max-height:200px;overflow-y:auto}
+#spanel .tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+#spanel .tab{padding:5px 12px;border-radius:10px;font-size:13px;background:var(--hover);white-space:nowrap;transition:background .15s}
+#spanel .tab.on{background:var(--tg-blue);color:#fff}
+#sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:6px;max-height:180px;overflow-y:auto}
 #sgrid button{background:none;border:0;cursor:pointer;color:var(--mut);font-size:11px;padding:4px;border-radius:10px;transition:background .15s}
 #sgrid button:hover{background:var(--hover)}
 #sgrid img{width:100%;height:64px;object-fit:contain;display:block}
@@ -203,19 +224,26 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 #bar .wrap{flex:1;background:var(--bg);border-radius:22px;display:flex;align-items:flex-end;padding:2px 4px 2px 16px;min-height:44px}
 #bar textarea{resize:none;max-height:140px;padding:11px 0;font-size:15px;line-height:1.4;font-family:inherit;background:transparent;border:0;outline:none;color:var(--txt)}
 #bar #txt::placeholder{color:var(--mut)}
-#bar #send{width:44px;height:44px;border-radius:50%;background:var(--tg-blue);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .1s;box-shadow:0 2px 6px rgba(42,171,238,.4)}
-#bar #send:hover{background:var(--tg-blue-hover)}
-#bar #send:active{transform:scale(.94)}
+#bar #send,#bar #micBtn{width:44px;height:44px;border-radius:50%;background:var(--tg-blue);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,transform .1s;box-shadow:0 2px 6px rgba(42,171,238,.4)}
+#bar #micBtn{background:var(--hover);color:var(--mut);box-shadow:none}
+#bar #micBtn.rec{background:#ef4444;color:#fff}
+#bar #send:hover,#bar #micBtn:hover{background:var(--tg-blue-hover);color:#fff}
+#bar #send:active,#bar #micBtn:active{transform:scale(.94)}
 
-/* Modallar */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:100;animation:fadeIn .15s}
 .modal .mbox{background:var(--sidebar);border-radius:20px;width:100%;max-width:420px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px #0007;animation:popIn .2s ease}
-.modal .mhead{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.modal .mhead{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);flex-shrink:0}
 .modal .mhead h3{margin:0;font-size:18px;font-weight:600}
 .modal .mhead button{padding:6px;border-radius:50%;color:var(--mut)}
 .modal .mhead button:hover{background:var(--hover);color:var(--txt)}
 .modal .mbody{padding:20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
-.modal .mbody.bare{padding:12px;gap:6px}
+.modal .mbody.bare{padding:8px;gap:2px}
+#mImg .mbox{max-width:100%;max-height:100%;background:transparent;box-shadow:none;border-radius:0}
+#mImg .imgwrap{position:relative;display:flex;align-items:center;justify-content:center;width:100vw;height:100vh;background:rgba(0,0,0,.95);touch-action:pinch-zoom}
+#mImg img{max-width:95vw;max-height:90vh;object-fit:contain;transition:transform .2s;user-select:none}
+#mImg .imgactions{position:absolute;top:16px;right:16px;display:flex;gap:8px}
+#mImg .imgactions button{background:rgba(255,255,255,.15);color:#fff;padding:10px;border-radius:50%;backdrop-filter:blur(8px)}
+#mImg .imgactions button:hover{background:rgba(255,255,255,.25)}
 
 .fld-modal{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px;transition:border .15s;width:100%}
 .fld-modal:focus{border-color:var(--tg-blue)}
@@ -227,7 +255,7 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 
 .urow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;width:100%;text-align:left;transition:background .12s;color:var(--txt)}
 .urow:hover{background:var(--hover)}
-.urow .uname{flex:1;font-weight:500;font-size:15px}
+.urow .uname{font-weight:500;font-size:15px}
 .urow .ustatus{font-size:12.5px;color:var(--mut)}
 .urow .ustatus.online{color:var(--tg-blue)}
 
@@ -236,6 +264,23 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .arow label{display:flex;gap:5px;align-items:center;color:var(--mut);font-size:12.5px;cursor:pointer}
 .arow input[type=checkbox]{width:auto;accent-color:var(--tg-blue)}
 .arow .kick{padding:4px 10px;background:rgba(239,68,68,.15);color:#ef4444;border-radius:8px;font-size:12px}
+
+.memrow{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;cursor:pointer}
+.memrow:hover{background:var(--hover)}
+.memrow .minfo{flex:1;min-width:0}
+.memrow .mname{font-weight:500;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.memrow .mrole{font-size:12px;color:var(--tg-blue)}
+.memrow .mstatus{font-size:12px;color:var(--mut)}
+.memrow .mstatus.online{color:#4ade80}
+
+.pinned-item{padding:12px;border-radius:12px;background:var(--bg);margin-bottom:8px;cursor:pointer;transition:background .15s;position:relative}
+.pinned-item:hover{background:var(--hover)}
+.pinned-item .pwho{font-size:12.5px;color:var(--tg-blue);font-weight:600;margin-bottom:4px}
+.pinned-item .ptext{font-size:14px;line-height:1.4}
+.pinned-item .ptime{font-size:11px;color:var(--mut);margin-top:4px}
+.pinned-item .punpin{position:absolute;top:8px;right:8px;padding:4px;border-radius:50%;color:var(--mut);opacity:0;transition:opacity .15s}
+.pinned-item:hover .punpin{opacity:1}
+.pinned-item .punpin:hover{background:rgba(239,68,68,.15);color:#ef4444}
 
 .seg{display:flex;gap:8px}
 .seg .segbtn{flex:1;padding:16px 12px;border-radius:14px;border:2px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--bg);transition:border-color .15s,background .15s;color:var(--txt)}
@@ -256,8 +301,14 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .skel{background:linear-gradient(90deg,var(--line) 25%,var(--hover) 50%,var(--line) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:12px;height:56px;margin:6px}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
+#ctxmenu{position:fixed;z-index:200;background:var(--sidebar);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 8px 24px #0006;min-width:160px;animation:popIn .15s}
+#ctxmenu button{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;width:100%;text-align:left;font-size:14px;color:var(--txt);transition:background .12s}
+#ctxmenu button:hover{background:var(--hover)}
+#ctxmenu button.danger:hover{background:rgba(239,68,68,.15);color:#ef4444}
+
 @media(min-width:900px){
   #side{max-width:360px}
+  #head .back{display:none}
 }
 @media(max-width:899px){
   #side{max-width:100%;border-right:0}
@@ -266,28 +317,24 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
   #head .back{display:inline-flex}
   .m .mbub{max-width:82%}
 }
-@media(min-width:900px){
-  #head .back{display:none}
-}
 @media(max-width:480px){
   #bar{padding:6px 8px 10px}
   #bar .bicon{padding:8px}
   #bar .wrap{padding-left:14px}
-  #bar #send{width:40px;height:40px}
+  #bar #send,#bar #micBtn{width:40px;height:40px}
   .m .mbub{max-width:85%}
 }
 </style>
 </head>
 <body>
 
+<div id="netbar">📡 Bağlantı kesildi — yeniden bağlanılıyor...</div>
 <div id="toasts"></div>
 
-<!-- ═══════════════════ AUTH ═══════════════════ -->
+<!-- AUTH -->
 <div id="auth" hidden>
   <form class="card" id="af">
-    <div class="logo">
-      <svg viewBox="0 0 24 24" width="34" height="34" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-    </div>
+    <div class="logo"><svg viewBox="0 0 24 24" width="34" height="34" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></div>
     <h1>ChatFlex</h1>
     <p class="sub" id="authsub">Hesap oluştur</p>
     <input class="fld" id="aname" placeholder="Görünecek adın" autocomplete="nickname">
@@ -299,10 +346,8 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
   </form>
 </div>
 
-<!-- ═══════════════════ APP ═══════════════════ -->
+<!-- APP -->
 <div id="app" hidden>
-
-  <!-- SIDEBAR -->
   <aside id="side">
     <div class="head">
       <button id="menuBtn" style="padding:6px;border-radius:50%">
@@ -314,40 +359,29 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
       </div>
     </div>
     <div class="actions">
-      <button id="dmBtn" title="Yeni DM">
-        <svg class="ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </button>
-      <button id="joinBtn" title="Kodla katıl">
-        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      </button>
-      <button id="newGroupBtn" title="Yeni grup">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      </button>
+      <button id="dmBtn" title="Yeni DM"><svg class="ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>
+      <button id="joinBtn" title="Kodla katıl"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
+      <button id="newGroupBtn" title="Yeni grup"><svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
     </div>
     <div id="rooms"></div>
   </aside>
 
-  <!-- CHAT -->
   <main id="chat">
     <div id="head">
-      <button class="back" id="backBtn">
-        <svg class="ico" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
+      <button class="back" id="backBtn"><svg class="ico" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div class="info" id="headInfo">
         <div class="htitle" id="rTitle"></div>
         <div class="hsub" id="rSub"></div>
       </div>
       <div class="hbtns">
-        <button id="searchMsgBtn" title="Mesaj ara">
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        </button>
+        <button id="pinListBtn" hidden title="Sabitlenmiş mesajlar"><svg class="ico" viewBox="0 0 24 24"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/></svg><span class="badge-mini" id="pinCount" hidden></span></button>
+        <button id="membersBtn" hidden title="Üyeler"><svg class="ico" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></button>
+        <button id="searchMsgBtn" title="Mesaj ara"><svg class="ico" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
         <button id="themeBtn" title="Tema">
           <svg class="ico moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="ico sun" hidden viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
         </button>
-        <button id="settingsBtn" hidden title="Yönetim">
-          <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
+        <button id="settingsBtn" hidden title="Yönetim"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
       </div>
     </div>
 
@@ -355,27 +389,28 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 
     <div id="msgs">
       <div id="empty">
-        <div class="big">
-          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <h2>Bir sohbet seç</h2>
-        <p>Soldaki listeden bir sohbet seç veya yeni bir tane oluştur</p>
+        <div class="big"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h2>Bir sohbet seç</h2><p>Soldaki listeden bir sohbet seç veya yeni bir tane oluştur</p>
       </div>
     </div>
 
     <div id="replybar" hidden>
       <div class="accent"></div>
       <div class="info"><b id="rw"></b><div id="rt"></div></div>
-      <button class="x" id="rcancel">
-        <svg class="ico sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <button class="x" id="rcancel"><svg class="ico sm" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+
+    <div id="recbar" hidden>
+      <div class="dot"></div>
+      <div class="time" id="recTime">0:00</div>
+      <div class="hint">Kaydediliyor... göndermek için ✓, iptal için ✕</div>
+      <button class="cancel" id="recCancel">✕</button>
+      <button class="stop" id="recStop">✓ Gönder</button>
     </div>
 
     <div id="spanel" hidden>
-      <div class="shead">
-        <span>Çıkartmalar</span>
-        <button id="snew">+ Yeni</button>
-      </div>
+      <div class="shead"><span>Çıkartmalar</span><button id="snew">+ Yeni</button></div>
+      <div class="tabs" id="stabs"></div>
       <div id="sgrid"></div>
     </div>
 
@@ -385,124 +420,93 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
       <input type="file" id="fImg" accept="image/*" hidden>
       <input type="file" id="fFile" hidden>
       <input type="file" id="fStk" accept="image/*" hidden>
-      <button class="bicon" id="emojiBtn" title="Emoji">
-        <svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-      </button>
-      <button class="bicon" id="attBtn" title="Dosya">
-        <svg class="ico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
-      </button>
-      <button class="bicon" id="stkBtn" title="Çıkartma">
-        <svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-      </button>
-      <div class="wrap">
-        <textarea id="txt" placeholder="Mesaj yaz..." rows="1"></textarea>
-      </div>
-      <button id="send" title="Gönder">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-      </button>
+      <button class="bicon" id="emojiBtn" title="Emoji"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></button>
+      <button class="bicon" id="attBtn" title="Dosya"><svg class="ico" viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+      <button class="bicon" id="stkBtn" title="Çıkartma"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg></button>
+      <div class="wrap"><textarea id="txt" placeholder="Mesaj yaz..." rows="1"></textarea></div>
+      <button id="send" title="Gönder"><svg class="ico" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      <button id="micBtn" title="Sesli mesaj"><svg class="ico" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
     </div>
   </main>
 </div>
 
-<!-- ═══════════════════ MODALLAR ═══════════════════ -->
+<!-- MODAL: IMAGE VIEWER -->
+<div class="modal" id="mImg" hidden>
+  <div class="imgwrap">
+    <img id="imgView">
+    <div class="imgactions">
+      <button id="imgDownload" title="İndir"><svg class="ico" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+      <button id="imgClose" title="Kapat"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+</div>
 
-<!-- Profil -->
+<!-- MODAL: Profil -->
 <div class="modal" id="mProfile" hidden>
   <div class="mbox">
-    <div class="mhead">
-      <h3>Profil</h3>
-      <button data-close="mProfile">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+    <div class="mhead"><h3>Profil</h3><button data-close="mProfile"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="mbody">
       <div class="pav-wrap">
         <div id="pav"></div>
-        <button class="cam" id="pavPick">
-          <svg class="ico sm" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </button>
+        <button class="cam" id="pavPick"><svg class="ico sm" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
         <input type="file" id="pavFile" accept="image/*" hidden>
       </div>
       <input class="fld-modal" id="pname" placeholder="Adın">
       <input class="fld-modal" id="pbio" placeholder="Hakkında">
-      <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mut)">
-        Avatar rengi
-        <input type="color" id="pcol" style="width:44px;height:32px;border-radius:8px;border:1px solid var(--line);cursor:pointer">
-      </label>
+      <label style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--mut)">Avatar rengi <input type="color" id="pcol" style="width:44px;height:32px;border-radius:8px;border:1px solid var(--line);cursor:pointer"></label>
       <button class="btn" id="psave">Kaydet</button>
       <button class="link" id="logoutBtn" style="color:#ef4444">Çıkış yap</button>
     </div>
   </div>
 </div>
 
-<!-- Yeni Grup -->
+<!-- MODAL: Yeni Grup -->
 <div class="modal" id="mGroup" hidden>
   <div class="mbox">
-    <div class="mhead">
-      <h3>Yeni Grup</h3>
-      <button data-close="mGroup">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+    <div class="mhead"><h3>Yeni Grup</h3><button data-close="mGroup"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="mbody">
       <input class="fld-modal" id="gname" placeholder="Grup adı">
       <input class="fld-modal" id="gdesc" placeholder="Açıklama (isteğe bağlı)">
       <div class="seg">
-        <button class="segbtn on" id="gpub" type="button">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          <b>Genel</b><small>Herkes görür</small>
-        </button>
-        <button class="segbtn" id="gpriv" type="button">
-          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <b>Gizli</b><small>Kodla katıl</small>
-        </button>
+        <button class="segbtn on" id="gpub" type="button"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><b>Genel</b><small>Herkes görür</small></button>
+        <button class="segbtn" id="gpriv" type="button"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><b>Gizli</b><small>Kodla katıl</small></button>
       </div>
+      <label style="display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer">
+        <input type="checkbox" id="genc" style="width:18px;height:18px;accent-color:var(--tg-blue)"> <span>🔐 Uçtan uca şifreli</span>
+      </label>
+      <small style="color:var(--mut);font-size:12px;margin-top:-6px">Şifreli odada mesajlar sadece katılımcılar tarafından okunur.</small>
       <button class="btn" id="gcreate">Oluştur</button>
     </div>
   </div>
 </div>
 
-<!-- Yeni DM -->
+<!-- MODAL: Yeni DM -->
 <div class="modal" id="mDM" hidden>
   <div class="mbox">
-    <div class="mhead">
-      <h3>Yeni Mesaj</h3>
-      <button data-close="mDM">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+    <div class="mhead"><h3>Yeni Mesaj</h3><button data-close="mDM"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="mbody bare" id="ulist"></div>
   </div>
 </div>
 
-<!-- Yönetim -->
+<!-- MODAL: Yönetim -->
 <div class="modal" id="mAdmin" hidden>
   <div class="mbox">
-    <div class="mhead">
-      <h3>Oda Yönetimi</h3>
-      <button data-close="mAdmin">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+    <div class="mhead"><h3>Oda Yönetimi</h3><button data-close="mAdmin"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="mbody">
       <input class="fld-modal" id="admName" placeholder="Oda adı">
       <input class="fld-modal" id="admDesc" placeholder="Açıklama">
       <button class="btn" id="admSave">Kaydet</button>
       <div style="font-size:13px;color:var(--mut);margin-top:6px">Admin yetkileri</div>
       <div id="alist"></div>
+      <button class="btn danger" id="leaveBtn" style="margin-top:14px">🚪 Odadan ayrıl</button>
     </div>
   </div>
 </div>
 
-<!-- Arama -->
+<!-- MODAL: Arama -->
 <div class="modal" id="mSearch" hidden>
   <div class="mbox">
-    <div class="mhead">
-      <h3>Mesaj ara</h3>
-      <button data-close="mSearch">
-        <svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+    <div class="mhead"><h3>Mesaj ara</h3><button data-close="mSearch"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="mbody">
       <input class="fld-modal" id="searchQ" placeholder="Ara..." autofocus>
       <div id="searchResults" style="max-height:50vh;overflow-y:auto"></div>
@@ -510,30 +514,62 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
   </div>
 </div>
 
+<!-- MODAL: Sabitlenmiş Mesajlar -->
+<div class="modal" id="mPinned" hidden>
+  <div class="mbox">
+    <div class="mhead"><h3>📌 Sabitlenmiş Mesajlar</h3><button data-close="mPinned"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="mbody" id="pinnedList"></div>
+  </div>
+</div>
+
+<!-- MODAL: Grup Üyeleri -->
+<div class="modal" id="mMembers" hidden>
+  <div class="mbox">
+    <div class="mhead"><h3 id="memTitle">Üyeler</h3><button data-close="mMembers"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="mbody bare" id="memList"></div>
+  </div>
+</div>
+
+<!-- MODAL: Sticker Pack -->
+<div class="modal" id="mPack" hidden>
+  <div class="mbox">
+    <div class="mhead"><h3>Yeni Çıkartma Paketi</h3><button data-close="mPack"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="mbody">
+      <input class="fld-modal" id="packName" placeholder="Paket adı (örn: Hayvanlar)">
+      <div id="packItems" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"></div>
+      <button class="btn ghost" id="packAddMore">+ Çıkartma ekle</button>
+      <button class="btn" id="packSave">Paketi oluştur</button>
+    </div>
+  </div>
+</div>
+
+<div id="ctxmenu" hidden></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════
-   CHATFLEX — Tek Dosya Telegram Tarzı Sohbet
+   CHATFLEX v3 — TÜM ÖZELLİKLER
 ═══════════════════════════════════════════════════════ */
-
-const SUPABASE_URL = 'https://drkgnvfhqlqufotqstm.supabase.co';
-// ⚠️ Yukarıdaki URL'yi kendi Supabase URL'inle değiştir (drkgnvfhqlqufotqstm yerine doğrusu)
-const SUPABASE_URL_CORRECT = 'https://drkgnvfhqglqufotqstm.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_XwBnmPcvusDQt9xJ3Ww40Q_c2bTlXIo';
-
-const sb = supabase.createClient(SUPABASE_URL_CORRECT, SUPABASE_KEY);
+const SB_URL = 'https://drkgnvfhqglqufotqstm.supabase.co';
+const SB_KEY = 'sb_publishable_XwBnmPcvusDQt9xJ3Ww40Q_c2bTlXIo';
+const sb = supabase.createClient(SB_URL, SB_KEY);
 const $ = s => document.querySelector(s);
 const $$ = s => document.querySelectorAll(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* ─────────── DURUM ─────────── */
-let me=null, prof=null, room=null;
-let profiles={}, roomList=[], members={}, adminMap={}, reads={}, unread={}, lastMsgMap={}, reactions={};
-let onlineSet=new Set(), chan=null, booted=false, signup=true, newAvatar=null;
+/* ───── DURUM ───── */
+let me=null, prof=null, room=null, roomKey=null;
+let profiles={}, roomList=[], members={}, adminMap={}, reads={}, unread={}, lastMsgMap={}, reactions={}, pinnedMap={};
+let onlineSet=new Set(), chan=null, globalChan=null, presenceChan=null, pinChan=null, roomUpdChan=null;
+let booted=false, signup=true, newAvatar=null;
 let replyTo=null, editing=null, lastTyping=0, typingTimer=null, lastSent=0;
-let priv=false;
+let priv=false, encEnabled=false;
+let mediaRec=null, audioChunks=[], recTimer=null, recStart=0, recStream=null;
+let ctxMsg=null, ctxMenuEl=$('#ctxmenu'), longPressTimer=null;
+let swipeStart=null, swipeEl=null;
+let packItems=[], packName='';
 
-/* ─────────── YARDIMCILAR ─────────── */
+/* ───── YARDIMCILAR ───── */
 const icon = (name, cls='ico') => {
   const icons = {
     search:'<circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
@@ -542,9 +578,10 @@ const icon = (name, cls='ico') => {
     trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
     pin:'<line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24z"/>',
     smile:'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
-    check:'<polyline points="20 6 9 17 4 12"/>',
-    checkcheck:'<polyline points="18 6 7 17 2 12"/><polyline points="22 6 11 17"/>',
-    x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>'
+    play:'<polygon points="5 3 19 12 5 21"/>',
+    pause:'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
+    lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>'
   };
   return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[name]||''}</svg>`;
 };
@@ -557,6 +594,7 @@ const timeAgo = ts => {
   return new Date(ts).toLocaleDateString('tr-TR',{day:'2-digit',month:'2-digit'});
 };
 const fmtTime = ts => new Date(ts).toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+const fmtDur = s => `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const dayLabel = ts => {
   const d = new Date(ts), t = new Date(), y = new Date(); y.setDate(t.getDate()-1);
   const same = (a,b) => a.toDateString() === b.toDateString();
@@ -573,7 +611,44 @@ const avatar = (p, size) => {
   return `<div class="${cls}" style="${style}background:${esc(color)}">${esc(initial)}</div>`;
 };
 
-/* ─────────── TOAST ─────────── */
+/* ───── E2E ŞİFRELEME ───── */
+async function deriveKey(room){
+  if (!room.encrypted || !room.invite_code) return null;
+  const cached = sessionStorage.getItem('rk_'+room.id);
+  if (cached) {
+    const raw = Uint8Array.from(atob(cached), c => c.charCodeAt(0));
+    return crypto.subtle.importKey('raw', raw, { name:'AES-GCM' }, false, ['encrypt','decrypt']);
+  }
+  const enc = new TextEncoder();
+  const mat = await crypto.subtle.importKey('raw', enc.encode(room.invite_code), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt: enc.encode('cf-salt-'+room.id), iterations:100000, hash:'SHA-256' },
+    mat, { name:'AES-GCM', length:256 }, true, ['encrypt','decrypt']
+  );
+  const raw = await crypto.subtle.exportKey('raw', key);
+  sessionStorage.setItem('rk_'+room.id, btoa(String.fromCharCode(...new Uint8Array(raw))));
+  return key;
+}
+async function encryptMsg(text, key){
+  if (!key || !text) return text;
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(text));
+  const combined = new Uint8Array(iv.length + ct.byteLength);
+  combined.set(iv); combined.set(new Uint8Array(ct), iv.length);
+  return 'ENC:' + btoa(String.fromCharCode(...combined));
+}
+async function decryptMsg(text, key){
+  if (!text || !text.startsWith('ENC:') || !key) return text;
+  try {
+    const raw = atob(text.slice(4));
+    const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
+    const iv = bytes.slice(0, 12), ct = bytes.slice(12);
+    const pt = await crypto.subtle.decrypt({ name:'AES-GCM', iv }, key, ct);
+    return new TextDecoder().decode(pt);
+  } catch(e){ return '🔒 [şifre çözülemedi]'; }
+}
+
+/* ───── TOAST ───── */
 function toast(msg, kind='', ms=3500){
   const el = document.createElement('div');
   el.className = 'toast ' + kind;
@@ -584,16 +659,33 @@ function toast(msg, kind='', ms=3500){
 }
 window.alert = m => toast(m, 'err');
 
-/* ─────────── TEMA ─────────── */
+/* ───── AĞ DURUMU ───── */
+function updateNet(){
+  const off = !navigator.onLine;
+  $('#netbar').classList.toggle('on', off);
+  if (!off && me) reconnectAll();
+}
+window.addEventListener('online', updateNet);
+window.addEventListener('offline', updateNet);
+updateNet();
+async function reconnectAll(){
+  try {
+    if (chan) { sb.removeChannel(chan); chan = null; }
+    if (room) await openRoom(room);
+    toast('Yeniden bağlandı', 'ok', 1500);
+  } catch(e){}
+}
+
+/* ───── TEMA ───── */
 const savedTheme = localStorage.getItem('cf_theme') || 'dark';
 document.documentElement.dataset.theme = savedTheme;
-updateThemeIcon();
 function updateThemeIcon(){
   const dark = document.documentElement.dataset.theme === 'dark';
-  $('.moon')?.toggleAttribute('hidden', !dark);
-  $('.sun')?.toggleAttribute('hidden', dark);
+  document.querySelector('.moon')?.toggleAttribute('hidden', !dark);
+  document.querySelector('.sun')?.toggleAttribute('hidden', dark);
   document.querySelector('meta[name=theme-color]').content = dark ? '#0F0F0F' : '#F4F4F5';
 }
+updateThemeIcon();
 $('#themeBtn').onclick = () => {
   const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
   document.documentElement.dataset.theme = next;
@@ -601,7 +693,7 @@ $('#themeBtn').onclick = () => {
   updateThemeIcon();
 };
 
-/* ─────────── AUTH ─────────── */
+/* ───── AUTH ───── */
 function setMode(s){
   signup = s;
   $('#aname').hidden = !s;
@@ -622,8 +714,8 @@ $('#af').onsubmit = async e => {
   $('#agobtn').disabled = true; $('#agobtn').textContent = '...';
   if (signup) {
     const { data, error } = await sb.auth.signUp({ email, password: pw, options: { data: { name: nm } } });
-    if (error) { $('#err').textContent = error.message.includes('already') ? 'Bu kullanıcı adı alınmış.' : error.message; }
-    else if (!data.session) { $('#err').textContent = 'Supabase "Confirm email" ayarını kapat.'; }
+    if (error) $('#err').textContent = error.message.includes('already') ? 'Bu kullanıcı adı alınmış.' : error.message;
+    else if (!data.session) $('#err').textContent = 'Supabase "Confirm email" ayarını kapat.';
   } else {
     const { error } = await sb.auth.signInWithPassword({ email, password: pw });
     if (error) $('#err').textContent = 'Kullanıcı adı veya şifre yanlış.';
@@ -633,12 +725,13 @@ $('#af').onsubmit = async e => {
 };
 sb.auth.onAuthStateChange((_e, session) => {
   if (session) { me = session.user; if (!booted) { booted = true; setTimeout(boot,0); } }
-  else { booted = false; me = null; if (chan) sb.removeChannel(chan);
-         $('#app').hidden = true; $('#auth').hidden = false; }
+  else { booted = false; me = null;
+    [chan,globalChan,presenceChan,pinChan,roomUpdChan].forEach(c => c && sb.removeChannel(c));
+    $('#app').hidden = true; $('#auth').hidden = false; }
 });
 sb.auth.getSession().then(({ data }) => { if (!data.session) $('#auth').hidden = false; });
 
-/* ─────────── BOOT ─────────── */
+/* ───── BOOT ───── */
 async function boot(){
   $('#auth').hidden = true; $('#app').hidden = false;
   await loadProfiles();
@@ -651,7 +744,6 @@ async function boot(){
   await loadRooms();
   startGlobal();
   startPinSub();
-  // Davet linki
   const p = new URLSearchParams(location.search);
   if (p.get('join')) {
     const code = p.get('join');
@@ -668,19 +760,23 @@ async function loadProfiles(){
   (data||[]).forEach(p => profiles[p.id] = p);
 }
 
-/* ─────────── ODALAR ─────────── */
+/* ───── ODALAR ───── */
 async function loadRooms(){
   const { data } = await sb.from('rooms').select('*').order('last_msg_at',{ascending:false,nullsFirst:false});
   roomList = data || [];
   await loadProfiles();
   const { data: mm } = await sb.from('room_members').select('*');
   members = {}; (mm||[]).forEach(x => (members[x.room_id] = members[x.room_id]||[]).push(x.user_id));
-  // Son mesajlar
-  const { data: msgs } = await sb.from('messages').select('room_id,content,file_name,is_sticker,created_at')
+  const { data: msgs } = await sb.from('messages').select('room_id,content,file_name,is_sticker,is_voice,created_at')
     .order('created_at',{ascending:false}).limit(500);
   lastMsgMap = {};
   (msgs||[]).forEach(m => {
-    if (!lastMsgMap[m.room_id]) lastMsgMap[m.room_id] = m.is_sticker ? '🖼️ Çıkartma' : m.content || `📎 ${m.file_name||'dosya'}`;
+    if (!lastMsgMap[m.room_id]) {
+      if (m.is_sticker) lastMsgMap[m.room_id] = '🖼️ Çıkartma';
+      else if (m.is_voice) lastMsgMap[m.room_id] = '🎤 Sesli mesaj';
+      else if (m.content?.startsWith('ENC:')) lastMsgMap[m.room_id] = '🔒 Şifreli mesaj';
+      else lastMsgMap[m.room_id] = m.content || `📎 ${m.file_name||'dosya'}`;
+    }
   });
   drawRooms();
 }
@@ -689,10 +785,7 @@ const label = r => r.is_dm ? ((profiles[otherId(r)]||{}).name || 'Özel mesaj') 
 function drawRooms(){
   const q = ($('#searchIn').value||'').toLowerCase();
   const list = q ? roomList.filter(r => label(r).toLowerCase().includes(q)) : roomList;
-  if (!list.length) {
-    $('#rooms').innerHTML = '<div class="empty-rooms">Sohbet bulunamadı</div>';
-    return;
-  }
+  if (!list.length) { $('#rooms').innerHTML = '<div class="empty-rooms">Sohbet bulunamadı</div>'; return; }
   $('#rooms').innerHTML = list.map(r => {
     const isDM = r.is_dm;
     const other = otherId(r);
@@ -704,12 +797,12 @@ function drawRooms(){
     return `<button class="room ${room?.id===r.id?'on':''}" data-id="${r.id}">
       ${avatarHtml}
       <div class="rmain">
-        <div class="rname">${esc(label(r))}</div>
-        <div class="rprev">${online && !lastMsgMap[r.id] ? '<span style="color:var(--tg-blue)">● </span>' : ''}${esc(prev.slice(0,60))}</div>
+        <div class="rname">${esc(label(r))} ${r.encrypted ? '<span class="lock">🔐</span>' : ''}</div>
+        <div class="rprev">${esc(prev.slice(0,60))}</div>
       </div>
       <div class="rmeta">
         <div class="rtime">${r.last_msg_at ? timeAgo(r.last_msg_at) : ''}</div>
-        ${n > 0 ? `<div class="badge">${n>99?'99+':n}</div>` : online ? '<div style="height:20px"></div>' : ''}
+        ${n > 0 ? `<div class="badge">${n>99?'99+':n}</div>` : ''}
       </div>
     </button>`;
   }).join('');
@@ -720,16 +813,12 @@ function drawRooms(){
 }
 $('#searchIn').oninput = drawRooms;
 
-/* ─────────── ODA OLUŞTUR / KATIL ─────────── */
-function setPriv(v){
-  priv = v;
-  $('#gpub').classList.toggle('on', !v);
-  $('#gpriv').classList.toggle('on', v);
-}
+/* ───── ODA OLUŞTUR ───── */
+function setPriv(v){ priv = v; $('#gpub').classList.toggle('on', !v); $('#gpriv').classList.toggle('on', v); }
 $('#gpub').onclick = () => setPriv(false);
 $('#gpriv').onclick = () => setPriv(true);
 $('#newGroupBtn').onclick = () => {
-  $('#gname').value = ''; $('#gdesc').value = ''; setPriv(false);
+  $('#gname').value = ''; $('#gdesc').value = ''; setPriv(false); $('#genc').checked = false;
   $('#mGroup').hidden = false;
 };
 $('#gcreate').onclick = async () => {
@@ -737,7 +826,10 @@ $('#gcreate').onclick = async () => {
   if (!name) return toast('Grup adı gerekli', 'err');
   const { data, error } = await sb.rpc('create_room', { room_name: name, priv });
   if (error) return toast('Oluşturulamadı: ' + error.message, 'err');
-  if ($('#gdesc').value.trim()) await sb.from('rooms').update({description:$('#gdesc').value.trim()}).eq('id',data.id);
+  const upd = {};
+  if ($('#gdesc').value.trim()) upd.description = $('#gdesc').value.trim();
+  if ($('#genc').checked) { upd.encrypted = true; }
+  if (Object.keys(upd).length) await sb.from('rooms').update(upd).eq('id', data.id);
   $('#mGroup').hidden = true;
   await loadRooms();
   const r = roomList.find(x => x.id === data.id);
@@ -774,20 +866,21 @@ $('#dmBtn').onclick = async () => {
   $('#mDM').hidden = false;
 };
 
-/* ─────────── ODA AÇ ─────────── */
+/* ───── ODA AÇ ───── */
 async function openRoom(r){
   room = r; replyTo = null; editing = null;
+  roomKey = r.encrypted ? await deriveKey(r) : null;
   $('#replybar').hidden = true; $('#epicker').hidden = true; $('#spanel').hidden = true;
   $('#app').classList.add('inchat');
-  $('#rTitle').textContent = (r.is_dm ? '' : r.is_private ? '🔒 ' : '') + label(r);
+  $('#rTitle').innerHTML = (r.is_dm ? '' : r.is_private ? '🔒 ' : '') + esc(label(r)) + (r.encrypted ? ' 🔐' : '');
   $('#settingsBtn').hidden = !(r.created_by === me.id && !r.is_dm);
+  $('#membersBtn').hidden = !!r.is_dm;
+  $('#pinListBtn').hidden = !!r.is_dm;
   $('#bar').hidden = false;
   unread[r.id] = 0;
   drawRooms();
-  // Realtime kanalı yenile
-  if (chan) sb.removeChannel(chan);
+  if (chan) { sb.removeChannel(chan); chan = null; }
   await loadAdmins();
-  // Mesajları yükle
   $('#msgs').innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
   const { data } = await sb.from('messages').select('*').eq('room_id', r.id)
     .order('created_at',{ascending:false}).limit(100);
@@ -798,70 +891,70 @@ async function openRoom(r){
     const ids = msgs.map(m => m.id);
     const { data: rx } = await sb.from('message_reactions').select('*').in('message_id', ids);
     (rx||[]).forEach(x => (reactions[x.message_id] = reactions[x.message_id]||[]).push(x));
-    msgs.forEach((m,i) => $('#msgs').appendChild(buildMsg(m, msgs[i-1])));
+    for (let i = 0; i < msgs.length; i++) {
+      const el = await buildMsg(msgs[i], msgs[i-1]);
+      $('#msgs').appendChild(el);
+    }
   } else {
-    $('#msgs').innerHTML = `<div id="empty">
-      <div class="big"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-      <h2>Henüz mesaj yok</h2><p>İlk mesajı sen yaz!</p>
-    </div>`;
+    $('#msgs').innerHTML = `<div id="empty"><div class="big"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h2>Henüz mesaj yok</h2><p>İlk mesajı sen yaz!</p></div>`;
   }
   scrollDown();
   reads = {};
   const { data: rr } = await sb.from('room_reads').select('*').eq('room_id', r.id);
   (rr||[]).forEach(x => reads[x.user_id] = x.read_at);
-  markRead();
-  drawSub();
-  drawPin();
-  // Realtime abone
+  markRead(); drawSub(); drawPin(); loadPinnedCount();
+  // Realtime
   chan = sb.channel('room-'+r.id)
     .on('postgres_changes', { event:'INSERT', schema:'public', table:'messages', filter:'room_id=eq.'+r.id },
       async p => {
         if (!profiles[p.new.user_id]) await loadProfiles();
-        const e = $('#empty'); if (e) e.remove();
-        const last = $('#msgs').lastElementChild;
-        last?.classList.add('was-last');
-        const lastMsg = last ? { id:last.dataset.id, created_at:last.dataset.ts, user_id:last.dataset.uid } : null;
-        $('#msgs').appendChild(buildMsg(p.new, lastMsg));
-        scrollDown(); markRead();
-        lastMsgMap[r.id] = p.new.is_sticker ? '🖼️ Çıkartma' : p.new.content || `📎 ${p.new.file_name||'dosya'}`;
+        $('#empty')?.remove();
+        const lastEl = $('#msgs').lastElementChild;
+        const lastMsg = lastEl ? { id:lastEl.dataset.id, created_at:lastEl.dataset.ts, user_id:lastEl.dataset.uid } : null;
+        const el = await buildMsg(p.new, lastMsg);
+        $('#msgs').appendChild(el);
+        scrollDown(true); markRead();
+        lastMsgMap[r.id] = p.new.is_sticker ? '🖼️ Çıkartma' : p.new.is_voice ? '🎤 Sesli mesaj' : (p.new.content?.startsWith('ENC:') ? '🔒 Şifreli mesaj' : p.new.content || '📎 dosya');
         if (p.new.user_id !== me.id) {
           if (document.hidden && Notification.permission === 'granted')
-            new Notification(profiles[p.new.user_id]?.name || 'Yeni mesaj', { body: p.new.content || '📷' });
+            new Notification(profiles[p.new.user_id]?.name || 'Yeni mesaj', { body: 'Yeni mesaj', tag: 'room-'+r.id });
         }
         drawRooms();
       })
     .on('postgres_changes', { event:'UPDATE', schema:'public', table:'messages' },
-      p => updateMsgEl(p.new))
+      async p => { await updateMsgEl(p.new); })
     .on('postgres_changes', { event:'DELETE', schema:'public', table:'messages' },
       p => document.querySelector(`.m[data-id="${p.old.id}"]`)?.remove())
     .on('postgres_changes', { event:'INSERT', schema:'public', table:'message_reactions' },
       p => { const r2 = p.new; (reactions[r2.message_id] = reactions[r2.message_id]||[]).push(r2); drawReactions(r2.message_id); })
     .on('postgres_changes', { event:'DELETE', schema:'public', table:'message_reactions' },
-      p => {
-        const r2 = p.old;
+      p => { const r2 = p.old;
         reactions[r2.message_id] = (reactions[r2.message_id]||[]).filter(x => !(x.user_id===r2.user_id && x.emoji===r2.emoji));
-        drawReactions(r2.message_id);
-      })
+        drawReactions(r2.message_id); })
     .on('postgres_changes', { event:'*', schema:'public', table:'room_reads', filter:'room_id=eq.'+r.id },
       p => { if (p.new) { reads[p.new.user_id] = p.new.read_at; drawSeen(); } })
+    .on('postgres_changes', { event:'*', schema:'public', table:'pinned_messages', filter:'room_id=eq.'+r.id },
+      () => { loadPinnedCount(); drawPin(); })
     .on('broadcast', { event:'typing' }, p => {
-      if (p.payload.id === me.id) return;
-      showTyping(p.payload.name);
+      if (p.payload.id !== me.id) showTyping(p.payload.name);
     })
     .subscribe();
 }
-function updateMsgEl(m){
+async function updateMsgEl(m){
   const el = document.querySelector(`.m[data-id="${m.id}"]`);
   if (!el) return;
   const c = el.querySelector('.content');
-  if (c) c.textContent = m.content || '';
+  if (c) {
+    const txt = m.content?.startsWith('ENC:') ? await decryptMsg(m.content, roomKey) : m.content;
+    c.textContent = txt || '';
+  }
   const t = el.querySelector('.mtinfo');
   if (t && m.edited_at && !t.querySelector('.edited')) {
     const e = document.createElement('span'); e.className='edited'; e.textContent='düzenlendi';
     t.insertBefore(e, t.firstChild);
   }
 }
-function buildMsg(m, prev){
+async function buildMsg(m, prev){
   const p = profiles[m.user_id];
   const mine = m.user_id === me.id;
   const grouped = prev && prev.user_id === m.user_id &&
@@ -871,31 +964,41 @@ function buildMsg(m, prev){
   div.className = 'm' + (mine?' me':'') + (grouped?' grouped':'') + (m.is_sticker?' stk':'');
   div.dataset.id = m.id; div.dataset.ts = m.created_at; div.dataset.uid = m.user_id;
 
+  let content = m.content || '';
+  const isEnc = content.startsWith('ENC:');
+  if (isEnc && roomKey) content = await decryptMsg(content, roomKey);
+
   const replyHtml = m.reply_to ? `<div class="quote" data-rid="${m.reply_to}"><b></b><div></div></div>` : '';
   const canPin = !room.is_dm && (room.created_by === me.id || adminMap[me.id]?.can_pin);
   const canDel = mine || (!room.is_dm && (room.created_by === me.id || adminMap[me.id]?.can_delete));
   const rx = reactions[m.id] || [];
   const rxGroups = {};
-  rx.forEach(x => {
-    rxGroups[x.emoji] = rxGroups[x.emoji] || { count:0, mine:false };
-    rxGroups[x.emoji].count++;
-    if (x.user_id === me.id) rxGroups[x.emoji].mine = true;
-  });
-  const reactsHtml = Object.entries(rxGroups).map(([e,v]) =>
-    `<button class="rchip${v.mine?' mine':''}" data-e="${esc(e)}">${esc(e)} <span>${v.count}</span></button>`
-  ).join('');
+  rx.forEach(x => { rxGroups[x.emoji] = rxGroups[x.emoji] || {count:0,mine:false}; rxGroups[x.emoji].count++; if (x.user_id === me.id) rxGroups[x.emoji].mine = true; });
+  const reactsHtml = Object.entries(rxGroups).map(([e,v]) => `<button class="rchip${v.mine?' mine':''}" data-e="${esc(e)}">${esc(e)} <span>${v.count}</span></button>`).join('');
 
   const dayHtml = showDay ? `<div class="daydiv"><span>${esc(dayLabel(m.created_at))}</span></div>` : '';
 
-  const innerHtml = `
+  let mediaHtml = '';
+  if (m.image_url) mediaHtml = `<img class="img" src="${esc(m.image_url)}" loading="lazy" alt="">`;
+  else if (m.file_url && m.is_voice) {
+    mediaHtml = `<div class="voice">
+      <button data-play="${esc(m.file_url)}">${icon('play','ico sm')}</button>
+      <div class="wave"><div class="bars">${Array.from({length:24}).map(() => `<div class="bar" style="height:${20+Math.random()*60}%"></div>`).join('')}</div></div>
+      <div class="dur">${fmtDur(m.duration||0)}</div>
+    </div>`;
+  }
+  else if (m.file_url) mediaHtml = `<a class="file" href="${esc(m.file_url)}" target="_blank" rel="noopener">📎 ${esc(m.file_name||'dosya')}</a>`;
+
+  const encTag = isEnc ? '<span class="enc-tag">🔐</span>' : '';
+
+  div.innerHTML = `
     ${dayHtml}
     <div class="mav">${mine || grouped ? '' : avatar(p,'sm')}</div>
     <div class="mbub">
       ${!mine && !grouped && !room.is_dm ? `<div class="who">${esc(p?.name||'?')}</div>` : ''}
       ${replyHtml}
-      ${m.content ? `<div class="content">${esc(m.content)}</div>` : ''}
-      ${m.image_url ? `<img class="img" src="${esc(m.image_url)}" loading="lazy" alt="">` : ''}
-      ${m.file_url ? `<a class="file" href="${esc(m.file_url)}" target="_blank" rel="noopener">📎 ${esc(m.file_name||'dosya')}</a>` : ''}
+      ${content ? `<div class="content">${encTag}${esc(content)}</div>` : ''}
+      ${mediaHtml}
       <div class="mtinfo">
         ${m.edited_at ? '<span class="edited">düzenlendi</span>' : ''}
         <span>${fmtTime(m.created_at)}</span>
@@ -909,10 +1012,9 @@ function buildMsg(m, prev){
         ${mine ? `<button data-act="edit" title="Düzenle">${icon('pencil','ico sm')}</button>` : ''}
         ${canDel ? `<button data-act="del" class="del" title="Sil">${icon('trash','ico sm')}</button>` : ''}
       </div>
+      <div class="reply-hint">↩</div>
     </div>`;
 
-  div.innerHTML = innerHtml;
-  // Quote'yu doldur
   if (m.reply_to) {
     const q = div.querySelector('.quote');
     const target = document.querySelector(`.m[data-id="${m.reply_to}"]`);
@@ -921,27 +1023,19 @@ function buildMsg(m, prev){
       q.querySelector('b').textContent = tp?.name || '?';
       q.querySelector('div').textContent = (target.querySelector('.content')?.textContent || '📷').slice(0,80);
       q.onclick = () => target.scrollIntoView({behavior:'smooth', block:'center'});
-    } else {
-      q.querySelector('b').textContent = 'Yanıt';
-      q.querySelector('div').textContent = '(mesaj silinmiş)';
-    }
+    } else { q.querySelector('b').textContent = 'Yanıt'; q.querySelector('div').textContent = '(mesaj silinmiş)'; }
   }
-  // Event'ler
-  div.querySelector('.mav')?.addEventListener('click', () => {
-    if (p) toast(`${p.name}${p.bio ? ' — '+p.bio : ''}`, '', 4000);
-  });
-  div.querySelector('[data-act="react"]')?.addEventListener('click', () => toggleEmojiPicker(div, m));
+  // Eventler
+  div.querySelector('.mav')?.addEventListener('click', () => p && toast(`${p.name}${p.bio?' — '+p.bio:''}`,'',4000));
+  div.querySelector('[data-act="react"]')?.addEventListener('click', e => { e.stopPropagation(); toggleEmojiPicker(div, m); });
   div.querySelector('[data-act="reply"]')?.addEventListener('click', () => setReply(m));
   div.querySelector('[data-act="pin"]')?.addEventListener('click', async () => {
-    const { error } = await sb.rpc('pin_message', { rid: room.id, mid: m.id });
+    const { error } = await sb.rpc('pin_msg', { rid: room.id, mid: m.id });
     if (error) return toast(error.message, 'err');
-    room.pinned_id = m.id; drawPin(); toast('Sabitlendi', 'ok');
+    toast('Sabitlendi', 'ok'); loadPinnedCount(); drawPin();
   });
   div.querySelector('[data-act="edit"]')?.addEventListener('click', () => {
-    editing = m;
-    $('#txt').value = m.content || '';
-    $('#txt').placeholder = 'Düzenle... (Esc iptal)';
-    $('#txt').focus();
+    editing = m; $('#txt').value = content; $('#txt').placeholder = 'Düzenle... (Esc iptal)'; $('#txt').focus(); autoGrow();
   });
   div.querySelector('[data-act="del"]')?.addEventListener('click', async () => {
     if (!confirm('Mesaj silinsin mi?')) return;
@@ -949,30 +1043,288 @@ function buildMsg(m, prev){
     if (error) toast(error.message, 'err');
   });
   div.querySelectorAll('.rchip').forEach(c => c.onclick = () => toggleReaction(m.id, c.dataset.e));
-  div.querySelector('.img')?.addEventListener('click', e => window.open(e.target.src, '_blank'));
+  div.querySelector('.img')?.addEventListener('click', e => openImgViewer(e.target.src));
+  div.querySelector('[data-play]')?.addEventListener('click', e => {
+    e.stopPropagation();
+    playVoice(e.currentTarget, m.file_url, m.duration || 0);
+  });
+  // Kaydırıp yanıtlama (touch)
+  div.addEventListener('touchstart', e => {
+    if (editing) return;
+    const t = e.touches[0];
+    swipeStart = { x: t.clientX, y: t.clientY, time: Date.now() };
+    swipeEl = div;
+    longPressTimer = setTimeout(() => { if (swipeStart && !swipeEl.classList.contains('swiping')) openCtxMenu(div, m); swipeStart = null; }, 500);
+  }, { passive: true });
+  div.addEventListener('touchmove', e => {
+    if (!swipeStart || !swipeEl) return;
+    const t = e.touches[0];
+    const dx = t.clientX - swipeStart.x;
+    const dy = t.clientY - swipeStart.y;
+    if (Math.abs(dy) > 10) { clearTimeout(longPressTimer); swipeStart = null; swipeEl = null; return; }
+    if (dx > 10 && Math.abs(dx) > Math.abs(dy)) {
+      clearTimeout(longPressTimer);
+      const t2 = Math.min(dx, 80);
+      div.style.transform = `translateX(${t2}px)`;
+      div.classList.add('swiping');
+    }
+  }, { passive: true });
+  div.addEventListener('touchend', e => {
+    clearTimeout(longPressTimer);
+    if (swipeStart && swipeEl) {
+      const t = e.changedTouches[0];
+      const dx = t.clientX - swipeStart.x;
+      if (dx > 60) setReply(m);
+      div.style.transform = '';
+      div.classList.remove('swiping');
+    }
+    swipeStart = null; swipeEl = null;
+  });
+  // Uzun bas (mouse)
+  div.addEventListener('contextmenu', e => { e.preventDefault(); openCtxMenu(div, m); });
   return div;
 }
+
+/* ───── IMAGE VIEWER ───── */
+function openImgViewer(url){
+  $('#imgView').src = url;
+  $('#mImg').hidden = false;
+}
+$('#imgClose').onclick = () => $('#mImg').hidden = true;
+$('#imgDownload').onclick = async () => {
+  const url = $('#imgView').src;
+  try {
+    const r = await fetch(url);
+    const blob = await r.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sohbet-resim-' + Date.now() + '.jpg';
+    a.click();
+  } catch(e){ window.open(url, '_blank'); }
+};
+$('#mImg').onclick = e => { if (e.target.id === 'mImg') $('#mImg').hidden = true; };
+// Pinch zoom
+let imgScale = 1;
+$('#imgView').addEventListener('touchstart', e => { if (e.touches.length === 2) imgScale = parseFloat($('#imgView').style.transform?.replace(/[^0-9.]/g,'')) || 1; });
+$('#imgView').addEventListener('touchmove', e => {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const d0 = e.touches[0], d1 = e.touches[1];
+    const dist = Math.hypot(d0.clientX - d1.clientX, d0.clientY - d1.clientY);
+    const sc = Math.min(Math.max(1, dist/150), 4);
+    $('#imgView').style.transform = `scale(${sc})`;
+  }
+});
+
+/* ───── SESLİ MESAJ ───── */
+let currentAudio = null, currentPlayBtn = null;
+function playVoice(btn, url, dur){
+  if (currentAudio && currentPlayBtn === btn) {
+    if (currentAudio.paused) { currentAudio.play(); btn.innerHTML = icon('pause','ico sm'); }
+    else { currentAudio.pause(); btn.innerHTML = icon('play','ico sm'); }
+    return;
+  }
+  if (currentAudio) { currentAudio.pause(); currentPlayBtn?.innerHTML.replaceWith(); }
+  if (currentPlayBtn) currentPlayBtn.innerHTML = icon('play','ico sm');
+  currentAudio = new Audio(url);
+  currentPlayBtn = btn;
+  btn.innerHTML = icon('pause','ico sm');
+  currentAudio.play();
+  currentAudio.onended = () => { btn.innerHTML = icon('play','ico sm'); currentAudio = null; currentPlayBtn = null; };
+}
+async function startRec(){
+  try {
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch(e){ return toast('Mikrofon izni gerekli', 'err'); }
+  mediaRec = new MediaRecorder(recStream);
+  audioChunks = [];
+  mediaRec.ondataavailable = e => e.data.size && audioChunks.push(e.data);
+  mediaRec.start();
+  recStart = Date.now();
+  $('#bar').hidden = true;
+  $('#recbar').hidden = false;
+  $('#recTime').textContent = '0:00';
+  recTimer = setInterval(() => {
+    const s = Math.floor((Date.now()-recStart)/1000);
+    $('#recTime').textContent = fmtDur(s);
+    if (s >= 120) stopRec(true);
+  }, 500);
+}
+async function stopRec(send){
+  if (!mediaRec) return;
+  clearInterval(recTimer);
+  const duration = Math.floor((Date.now()-recStart)/1000);
+  return new Promise(resolve => {
+    mediaRec.onstop = async () => {
+      recStream?.getTracks().forEach(t => t.stop());
+      $('#recbar').hidden = true; $('#bar').hidden = false;
+      if (send && audioChunks.length && duration > 0) {
+        const blob = new Blob(audioChunks, { type:'audio/webm' });
+        const file = new File([blob], `voice-${Date.now()}.webm`, { type:'audio/webm' });
+        const url = await upload(file, 'voice');
+        if (url) sendMsg({ file_url: url, file_name: 'voice.webm', is_voice: true, duration });
+      }
+      mediaRec = null; audioChunks = [];
+      resolve();
+    };
+    mediaRec.stop();
+  });
+}
+$('#micBtn').addEventListener('mousedown', e => { e.preventDefault(); startRec(); });
+$('#micBtn').addEventListener('mouseup', () => stopRec(true));
+$('#micBtn').addEventListener('mouseleave', () => { if (mediaRec) stopRec(false); });
+$('#micBtn').addEventListener('touchstart', e => { e.preventDefault(); startRec(); }, { passive:false });
+$('#micBtn').addEventListener('touchend', e => { e.preventDefault(); stopRec(true); });
+$('#recCancel').onclick = () => stopRec(false);
+$('#recStop').onclick = () => stopRec(true);
+
+/* ───── BAĞLAM MENÜ (Uzun Bas) ───── */
+function openCtxMenu(msgDiv, m){
+  const mine = m.user_id === me.id;
+  const canPin = !room.is_dm && (room.created_by === me.id || adminMap[me.id]?.can_pin);
+  const canDel = mine || (!room.is_dm && (room.created_by === me.id || adminMap[me.id]?.can_delete));
+  ctxMsg = m;
+  ctxMenuEl.innerHTML = `
+    <button data-a="reply">${icon('reply','ico sm')} Yanıtla</button>
+    <button data-a="react">${icon('smile','ico sm')} Tepki ekle</button>
+    ${canPin ? `<button data-a="pin">${icon('pin','ico sm')} Sabitle</button>` : ''}
+    ${mine ? `<button data-a="edit">${icon('pencil','ico sm')} Düzenle</button>` : ''}
+    ${canDel ? `<button data-a="del" class="danger">${icon('trash','ico sm')} Sil</button>` : ''}
+  `;
+  // Konum
+  const rect = msgDiv.getBoundingClientRect();
+  const cw = 200, ch = ctxMenuEl.offsetHeight || 240;
+  let x = Math.min(rect.left, window.innerWidth - cw - 10);
+  let y = rect.top;
+  if (y + ch > window.innerHeight) y = window.innerHeight - ch - 10;
+  ctxMenuEl.style.left = x + 'px';
+  ctxMenuEl.style.top = y + 'px';
+  ctxMenuEl.hidden = false;
+  ctxMenuEl.querySelectorAll('button').forEach(b => b.onclick = () => handleCtx(b.dataset.a));
+}
+async function handleCtx(a){
+  ctxMenuEl.hidden = true;
+  if (!ctxMsg) return;
+  if (a === 'reply') setReply(ctxMsg);
+  else if (a === 'react') toggleEmojiPicker(document.querySelector(`.m[data-id="${ctxMsg.id}"]`), ctxMsg);
+  else if (a === 'pin') {
+    const { error } = await sb.rpc('pin_msg', { rid: room.id, mid: ctxMsg.id });
+    if (error) return toast(error.message, 'err');
+    toast('Sabitlendi', 'ok'); loadPinnedCount(); drawPin();
+  }
+  else if (a === 'edit') {
+    editing = ctxMsg;
+    const content = ctxMsg.content?.startsWith('ENC:') ? await decryptMsg(ctxMsg.content, roomKey) : ctxMsg.content;
+    $('#txt').value = content || ''; $('#txt').placeholder = 'Düzenle... (Esc iptal)'; $('#txt').focus(); autoGrow();
+  }
+  else if (a === 'del') {
+    if (!confirm('Mesaj silinsin mi?')) return;
+    const { error } = await sb.from('messages').delete().eq('id', ctxMsg.id);
+    if (error) toast(error.message, 'err');
+  }
+}
+document.addEventListener('click', e => { if (!ctxMenuEl.contains(e.target)) ctxMenuEl.hidden = true; });
+
+/* ───── SABİTLENMİŞ LİSTESİ ───── */
+async function loadPinnedCount(){
+  if (!room) return;
+  const { data, count } = await sb.from('pinned_messages').select('*', { count:'exact' }).eq('room_id', room.id);
+  pinnedMap[room.id] = data || [];
+  const c = data?.length || 0;
+  $('#pinCount').hidden = !c;
+  $('#pinCount').textContent = c;
+}
+$('#pinListBtn').onclick = async () => {
+  if (!room) return;
+  await loadPinnedCount();
+  const list = pinnedMap[room.id] || [];
+  if (!list.length) { $('#pinnedList').innerHTML = '<div style="text-align:center;color:var(--mut);padding:20px">Sabitlenmiş mesaj yok</div>'; $('#mPinned').hidden = false; return; }
+  const ids = list.map(p => p.message_id);
+  const { data: msgs } = await sb.from('messages').select('*').in('id', ids);
+  const byId = {}; (msgs||[]).forEach(m => byId[m.id] = m);
+  $('#pinnedList').innerHTML = list.map(p => {
+    const m = byId[p.message_id];
+    if (!m) return '';
+    const p2 = profiles[m.user_id];
+    const content = m.content?.startsWith('ENC:') ? '🔒 Şifreli mesaj' : (m.content || (m.is_voice ? '🎤 Sesli mesaj' : '📷'));
+    return `<div class="pinned-item" data-mid="${m.id}">
+      <div class="pwho">${esc(p2?.name||'?')} • ${timeAgo(m.created_at)}</div>
+      <div class="ptext">${esc(content.slice(0,150))}</div>
+      <button class="punpin" data-unpin="${m.id}" title="Kaldır">${icon('trash','ico sm')}</button>
+    </div>`;
+  }).join('');
+  $$('#pinnedList .pinned-item').forEach(el => el.onclick = async e => {
+    if (e.target.closest('.punpin')) return;
+    $('#mPinned').hidden = true;
+    const target = document.querySelector(`.m[data-id="${el.dataset.mid}"]`);
+    if (target) target.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+  $$('#pinnedList [data-unpin]').forEach(b => b.onclick = async e => {
+    e.stopPropagation();
+    const { error } = await sb.rpc('unpin_msg', { rid: room.id, mid: parseInt(b.dataset.unpin) });
+    if (error) return toast(error.message, 'err');
+    toast('Kaldırıldı', 'ok'); loadPinnedCount(); drawPin();
+    b.closest('.pinned-item').remove();
+  });
+  $('#mPinned').hidden = false;
+};
+
+/* ───── ÜYELER ───── */
+$('#membersBtn').onclick = async () => {
+  if (!room) return;
+  $('#memTitle').textContent = `Üyeler (${(members[room.id]||[]).length})`;
+  const ids = members[room.id] || [];
+  $('#memList').innerHTML = ids.filter(u => profiles[u]).map(u => {
+    const p = profiles[u];
+    const isAdmin = adminMap[u];
+    const isOwner = room.created_by === u;
+    return `<div class="memrow" data-uid="${u}">
+      ${avatar(p)}
+      <div class="minfo">
+        <div class="mname">${esc(p.name)} ${u === me.id ? '(sen)' : ''}</div>
+        <div class="mstatus ${onlineSet.has(u)?'online':''}">${isOwner ? '👑 Kurucu' : isAdmin ? '⭐ Admin' : onlineSet.has(u) ? '● çevrimiçi' : 'çevrimdışı'}</div>
+      </div>
+      ${u !== me.id ? `<button class="kick" data-mem="${u}" style="padding:4px 10px;background:rgba(239,68,68,.15);color:#ef4444;border-radius:8px;font-size:12px">Çıkar</button>` : ''}
+    </div>`;
+  }).join('') || '<div style="text-align:center;color:var(--mut);padding:20px">Üye bulunamadı</div>';
+  $$('#memList [data-mem]').forEach(b => b.onclick = async () => {
+    if (!confirm('Üye çıkarılsın mı?')) return;
+    const { error } = await sb.rpc('kick_member', { rid: room.id, usr: b.dataset.mem });
+    if (error) return toast(error.message, 'err');
+    toast('Çıkarıldı', 'ok');
+    $('#membersBtn').click();
+  });
+  $('#mMembers').hidden = false;
+};
+
+/* ───── ODADAN AYRIL ───── */
+$('#leaveBtn').onclick = async () => {
+  if (!confirm('Odadan ayrılmak istediğinden emin misin?')) return;
+  const { error } = await sb.rpc('leave_room', { rid: room.id });
+  if (error) return toast(error.message, 'err');
+  $('#mAdmin').hidden = true;
+  toast('Odadan ayrıldın', 'ok');
+  room = null;
+  $('#app').classList.remove('inchat');
+  await loadRooms();
+  $('#rTitle').textContent = '';
+  $('#msgs').innerHTML = `<div id="empty"><div class="big"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h2>Bir sohbet seç</h2><p>Soldaki listeden bir sohbet seç</p></div>`;
+  $('#bar').hidden = true;
+  $('#head .back').click();
+};
+
+/* ───── REAKSİYONLAR ───── */
 function drawReactions(mid){
   const div = document.querySelector(`.m[data-id="${mid}"]`);
   if (!div) return;
   const bub = div.querySelector('.mbub');
   const rx = reactions[mid] || [];
   const groups = {};
-  rx.forEach(x => {
-    groups[x.emoji] = groups[x.emoji] || { count:0, mine:false };
-    groups[x.emoji].count++;
-    if (x.user_id === me.id) groups[x.emoji].mine = true;
-  });
+  rx.forEach(x => { groups[x.emoji] = groups[x.emoji] || {count:0,mine:false}; groups[x.emoji].count++; if (x.user_id === me.id) groups[x.emoji].mine = true; });
   let holder = bub.querySelector('.reacts');
   if (!Object.keys(groups).length) { holder?.remove(); return; }
-  if (!holder) {
-    holder = document.createElement('div');
-    holder.className = 'reacts';
-    bub.appendChild(holder);
-  }
-  holder.innerHTML = Object.entries(groups).map(([e,v]) =>
-    `<button class="rchip${v.mine?' mine':''}" data-e="${esc(e)}">${esc(e)} <span>${v.count}</span></button>`
-  ).join('');
+  if (!holder) { holder = document.createElement('div'); holder.className='reacts'; bub.appendChild(holder); }
+  holder.innerHTML = Object.entries(groups).map(([e,v]) => `<button class="rchip${v.mine?' mine':''}" data-e="${esc(e)}">${esc(e)} <span>${v.count}</span></button>`).join('');
   holder.querySelectorAll('.rchip').forEach(c => c.onclick = () => toggleReaction(mid, c.dataset.e));
 }
 async function toggleReaction(mid, emoji){
@@ -985,41 +1337,33 @@ function toggleEmojiPicker(msgDiv, m){
   const list = ['👍','❤️','😂','😮','😢','🔥','🎉','👏','💯','🙏','😍','🤔'];
   document.querySelectorAll('.epick').forEach(e => e.remove());
   if (emojiPickDiv === msgDiv) { emojiPickDiv = null; return; }
-  const ep = document.createElement('div');
-  ep.className = 'epick';
+  const ep = document.createElement('div'); ep.className='epick';
   ep.innerHTML = list.map(e => `<button>${e}</button>`).join('');
-  ep.querySelectorAll('button').forEach((b,i) => b.onclick = () => {
-    toggleReaction(m.id, list[i]);
-    ep.remove(); emojiPickDiv = null;
-  });
+  ep.querySelectorAll('button').forEach((b,i) => b.onclick = () => { toggleReaction(m.id, list[i]); ep.remove(); emojiPickDiv = null; });
   msgDiv.querySelector('.mbub').after(ep);
   emojiPickDiv = msgDiv;
 }
-const scrollDown = (smooth) => {
-  const c = $('#msgs');
-  c.scrollTo({ top: c.scrollHeight, behavior: smooth?'smooth':'auto' });
-};
+const scrollDown = (smooth) => { const c = $('#msgs'); c.scrollTo({top:c.scrollHeight, behavior:smooth?'smooth':'auto'}); };
 
-/* ─────────── YANITLA ─────────── */
+/* ───── YANIT / GÖNDER ───── */
 function setReply(m){
   replyTo = m;
   $('#rw').textContent = profiles[m.user_id]?.name || '?';
-  $('#rt').textContent = m.content || '📷';
+  $('#rt').textContent = m.content?.startsWith('ENC:') ? '🔒 Şifreli' : (m.content || '📷');
   $('#replybar').hidden = false;
   $('#txt').focus();
 }
 $('#rcancel').onclick = () => { replyTo = null; $('#replybar').hidden = true; };
 
-/* ─────────── GÖNDER ─────────── */
 async function sendMsg(extra={}){
-  const content = $('#txt').value.trim();
+  let content = $('#txt').value.trim();
   if (!room) return;
   if (editing) {
     if (!content) return;
+    if (roomKey) content = await encryptMsg(content, roomKey);
     const { error } = await sb.rpc('edit_message', { mid: editing.id, new_content: content });
     if (error) return toast(error.message, 'err');
-    editing = null; $('#txt').value = ''; $('#txt').placeholder = 'Mesaj yaz...';
-    autoGrow();
+    editing = null; $('#txt').value = ''; $('#txt').placeholder='Mesaj yaz...'; autoGrow();
     return;
   }
   if (!content && !extra.image_url && !extra.file_url) return;
@@ -1027,6 +1371,7 @@ async function sendMsg(extra={}){
   if (now - lastSent < 300) return toast('Yavaş la!', 'err', 1200);
   lastSent = now;
   $('#txt').value = ''; autoGrow();
+  if (content && roomKey) content = await encryptMsg(content, roomKey);
   const payload = { room_id: room.id, user_id: me.id, content: content || null, ...extra };
   if (replyTo) { payload.reply_to = replyTo.id; replyTo = null; $('#replybar').hidden = true; }
   const { error } = await sb.from('messages').insert(payload);
@@ -1035,14 +1380,15 @@ async function sendMsg(extra={}){
 $('#send').onclick = () => sendMsg();
 $('#txt').addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
-  if (e.key === 'Escape' && editing) {
-    editing = null; $('#txt').value = ''; $('#txt').placeholder = 'Mesaj yaz...'; autoGrow();
-  }
+  if (e.key === 'Escape' && editing) { editing = null; $('#txt').value = ''; $('#txt').placeholder='Mesaj yaz...'; autoGrow(); }
 });
 function autoGrow(){
   const t = $('#txt');
   t.style.height = 'auto';
   t.style.height = Math.min(t.scrollHeight, 140) + 'px';
+  const hasText = t.value.trim().length > 0;
+  $('#send').hidden = !hasText;
+  $('#micBtn').hidden = hasText;
 }
 $('#txt').addEventListener('input', () => {
   autoGrow();
@@ -1052,7 +1398,7 @@ $('#txt').addEventListener('input', () => {
   }
 });
 
-/* ─────────── YÜKLE ─────────── */
+/* ───── YÜKLE ───── */
 async function upload(file, folder){
   const ext = (file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
   const path = `${folder}/${me.id}/${Date.now()}.${ext}`;
@@ -1067,53 +1413,69 @@ $('#fImg').onchange = async e => {
   const url = await upload(f, 'chat'); if (url) sendMsg({ image_url: url });
 };
 
-/* ─────────── EMOJI ─────────── */
+/* ───── EMOJI ───── */
 const EMOJIS = ['😀','😂','🥰','😎','🤔','😢','😮','😡','👍','👎','❤️','🔥','🎉','🙏','👏','💯','✨','💪','🥳','😴','🤗','😇','🤩','😋','🍕','☕','⚽','🎮','📱','💻','🌙','☀️','⭐','🌈','💧','🌸'];
 $('#emojiBtn').onclick = () => {
   const p = $('#epicker');
   if (p.hidden) {
     p.innerHTML = EMOJIS.map(e => `<button>${e}</button>`).join('');
-    p.querySelectorAll('button').forEach(b => b.onclick = () => {
-      $('#txt').value += b.textContent;
-      autoGrow(); $('#txt').focus();
-    });
+    p.querySelectorAll('button').forEach(b => b.onclick = () => { $('#txt').value += b.textContent; autoGrow(); $('#txt').focus(); });
     $('#spanel').hidden = true;
     p.hidden = false;
   } else p.hidden = true;
 };
 
-/* ─────────── ÇIKARTMA ─────────── */
-let pendStickerName = '';
+/* ───── ÇIKARTMA ───── */
+let currentPack = 'Tümü', stickerCache = [];
 $('#stkBtn').onclick = async () => {
   const p = $('#spanel');
   if (!p.hidden) { p.hidden = true; return; }
   $('#epicker').hidden = true;
   const { data } = await sb.from('stickers').select('*').order('created_at',{ascending:false});
-  $('#sgrid').innerHTML = (data||[]).length
-    ? data.map(s => `<button data-u="${esc(s.image_url)}" data-n="${esc(s.name)}"><img src="${esc(s.image_url)}" loading="lazy" alt=""><br>${esc(s.name)}</button>`).join('')
-    : '<div style="grid-column:1/-1;color:var(--mut);font-size:13px;padding:8px">Henüz çıkartma yok.</div>';
+  stickerCache = data || [];
+  const packs = ['Tümü', ...new Set(stickerCache.map(s => s.pack || 'Genel'))];
+  $('#stabs').innerHTML = packs.map(pk => `<button class="tab${pk===currentPack?' on':''}" data-pk="${esc(pk)}">${esc(pk)}</button>`).join('');
+  $$('#stabs .tab').forEach(b => b.onclick = () => { currentPack = b.dataset.pk; drawStickers(); });
+  drawStickers();
+  p.hidden = false;
+};
+function drawStickers(){
+  const list = currentPack === 'Tümü' ? stickerCache : stickerCache.filter(s => (s.pack||'Genel') === currentPack);
+  $('#sgrid').innerHTML = list.length ? list.map(s => `<button data-u="${esc(s.image_url)}" data-n="${esc(s.name)}"><img src="${esc(s.image_url)}" loading="lazy" alt=""><br>${esc(s.name)}</button>`).join('') : '<div style="grid-column:1/-1;color:var(--mut);font-size:13px;padding:8px">Bu pakette çıkartma yok.</div>';
   $$('#sgrid button').forEach(b => b.onclick = async () => {
     $('#spanel').hidden = true;
     await sb.from('messages').insert({ room_id: room.id, user_id: me.id, image_url: b.dataset.u, is_sticker: true, file_name: b.dataset.n });
   });
-  p.hidden = false;
-};
+}
 $('#snew').onclick = () => {
-  const n = (prompt('Çıkartma adı:')||'').trim();
-  if (!n) return;
-  pendStickerName = n;
-  $('#fStk').click();
+  packItems = []; packName = '';
+  $('#packName').value = ''; drawPack();
+  $('#mPack').hidden = false;
 };
+function drawPack(){
+  $('#packItems').innerHTML = packItems.map((u,i) => `<div style="position:relative"><img src="${u}" style="width:100%;height:70px;object-fit:contain;background:var(--bg);border-radius:8px"><button data-rm="${i}" style="position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;border-radius:50%;width:22px;height:22px;font-size:12px">✕</button></div>`).join('') + (packItems.length ? '' : '<div style="grid-column:1/-1;color:var(--mut);font-size:13px;text-align:center;padding:20px">Henüz çıkartma eklenmedi</div>');
+  $$('#packItems [data-rm]').forEach(b => b.onclick = () => { packItems.splice(+b.dataset.rm, 1); drawPack(); });
+}
+$('#packAddMore').onclick = () => $('#fStk').click();
 $('#fStk').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   const url = await upload(f, 'stickers'); if (!url) return;
-  const { error } = await sb.from('stickers').insert({ name: pendStickerName, image_url: url, created_by: me.id });
+  packItems.push(url); drawPack();
+};
+$('#packSave').onclick = async () => {
+  const name = $('#packName').value.trim();
+  if (!name) return toast('Paket adı gerekli', 'err');
+  if (!packItems.length) return toast('En az 1 çıkartma ekle', 'err');
+  const rows = packItems.map((u,i) => ({ name: `${name}-${i+1}`, image_url: u, created_by: me.id, pack: name }));
+  const { error } = await sb.from('stickers').insert(rows);
   if (error) return toast(error.message, 'err');
-  toast('Çıkartma eklendi', 'ok');
+  toast('Paket oluşturuldu!', 'ok');
+  $('#mPack').hidden = true;
+  currentPack = name;
   $('#stkBtn').click(); $('#stkBtn').click();
 };
 
-/* ─────────── SÜRÜKLE-BIRAK ─────────── */
+/* ───── SÜRÜKLE-BIRAK ───── */
 document.addEventListener('dragover', e => { e.preventDefault(); $('#msgs')?.classList.add('drag'); });
 document.addEventListener('dragleave', e => { if (e.relatedTarget === null) $('#msgs')?.classList.remove('drag'); });
 document.addEventListener('drop', async e => {
@@ -1124,42 +1486,31 @@ document.addEventListener('drop', async e => {
   if (url) sendMsg(f.type.startsWith('image/') ? { image_url: url } : { file_url: url, file_name: f.name });
 });
 
-/* ─────────── PROFİL ─────────── */
+/* ───── PROFİL ───── */
 function drawPav(){
   const div = $('#pav');
-  if (newAvatar) {
-    div.innerHTML = `<img class="av" style="width:96px;height:96px" src="${URL.createObjectURL(newAvatar)}">`;
-  } else {
-    div.innerHTML = avatar({ ...prof, color: $('#pcol').value }, 96);
-  }
+  if (newAvatar) div.innerHTML = `<img class="av" style="width:96px;height:96px" src="${URL.createObjectURL(newAvatar)}">`;
+  else div.innerHTML = avatar({ ...prof, color: $('#pcol').value }, 96);
 }
 $('#menuBtn').onclick = () => {
   newAvatar = null;
-  $('#pname').value = prof.name;
-  $('#pbio').value = prof.bio || '';
-  $('#pcol').value = prof.color || '#2AABEE';
-  drawPav();
-  $('#mProfile').hidden = false;
+  $('#pname').value = prof.name; $('#pbio').value = prof.bio || ''; $('#pcol').value = prof.color || '#2AABEE';
+  drawPav(); $('#mProfile').hidden = false;
 };
 $('#pcol').oninput = drawPav;
 $('#pavPick').onclick = () => $('#pavFile').click();
 $('#pavFile').onchange = e => { newAvatar = e.target.files[0] || null; drawPav(); };
 $('#psave').onclick = async () => {
   const upd = { name: $('#pname').value.trim() || prof.name, bio: $('#pbio').value.trim(), color: $('#pcol').value };
-  if (newAvatar) {
-    const url = await upload(newAvatar, 'avatars');
-    if (url) upd.avatar_url = url;
-  }
+  if (newAvatar) { const url = await upload(newAvatar, 'avatars'); if (url) upd.avatar_url = url; }
   const { data, error } = await sb.from('profiles').update(upd).eq('id', me.id).select().single();
   if (error) return toast(error.message, 'err');
   prof = profiles[me.id] = data;
-  $('#mProfile').hidden = true;
-  toast('Kaydedildi', 'ok');
-  drawRooms();
+  $('#mProfile').hidden = true; toast('Kaydedildi', 'ok'); drawRooms();
 };
 $('#logoutBtn').onclick = () => { $('#mProfile').hidden = true; sb.auth.signOut(); };
 
-/* ─────────── AYARLAR / YÖNETİM ─────────── */
+/* ───── YÖNETİM ───── */
 async function loadAdmins(){
   if (!room || room.is_dm) return;
   const { data } = await sb.from('room_admins').select('*').eq('room_id', room.id);
@@ -1178,7 +1529,6 @@ $('#settingsBtn').onclick = () => {
       <label><input type="checkbox" class="ad" ${a?'checked':''}> Admin</label>
       <label><input type="checkbox" class="cp" ${a?.can_pin?'checked':''}> Sabitle</label>
       <label><input type="checkbox" class="cd" ${a?.can_delete?'checked':''}> Sil</label>
-      <button class="kick" data-kick="${u}">At</button>
     </div>`;
   }).join('') || '<div style="color:var(--mut);font-size:13px;padding:8px">Başka üye yok.</div>';
   $$('#alist .arow').forEach(row => {
@@ -1191,12 +1541,6 @@ $('#settingsBtn').onclick = () => {
       if (error) return toast(error.message, 'err');
       adminMap[u] = { user_id:u, can_pin:cp.checked, can_delete:cd.checked };
     };
-    row.querySelector('[data-kick]')?.addEventListener('click', async () => {
-      if (!confirm('Üye atılsın mı?')) return;
-      const { error } = await sb.rpc('kick_member',{rid:room.id,usr:row.dataset.u});
-      if (error) return toast(error.message, 'err');
-      row.remove(); toast('Atıldı', 'ok');
-    });
   });
   $('#mAdmin').hidden = false;
 };
@@ -1204,50 +1548,51 @@ $('#admSave').onclick = async () => {
   if (!room) return;
   const { error } = await sb.rpc('update_room',{rid:room.id,new_name:$('#admName').value.trim(),new_desc:$('#admDesc').value.trim()});
   if (error) return toast(error.message, 'err');
-  room.name = $('#admName').value.trim();
-  room.description = $('#admDesc').value.trim();
-  $('#rTitle').textContent = (room.is_private?'🔒 ':'')+label(room);
+  room.name = $('#admName').value.trim(); room.description = $('#admDesc').value.trim();
+  $('#rTitle').innerHTML = (room.is_private?'🔒 ':'')+esc(label(room))+(room.encrypted?' 🔐':'');
   toast('Kaydedildi', 'ok'); drawRooms();
 };
 
-/* ─────────── SABİTLE ─────────── */
+/* ───── SABİTLE BAR ───── */
 async function drawPin(){
   const b = $('#pinbar'), id = room?.pinned_id;
   if (!id) { b.hidden = true; return; }
   const { data: m } = await sb.from('messages').select('*').eq('id', id).maybeSingle();
   if (!m) { b.hidden = true; return; }
   b.hidden = false;
-  b.innerHTML = `<div style="color:var(--tg-blue)">📌</div>
-    <div class="pincontent"><b>${esc(profiles[m.user_id]?.name||'?')}</b>: ${esc((m.content||m.file_name||'📷').slice(0,80))}</div>`;
+  const content = m.content?.startsWith('ENC:') ? '🔒 Şifreli' : (m.content || (m.is_voice ? '🎤 Sesli' : '📷'));
+  b.innerHTML = `<div style="color:var(--tg-blue)">📌</div><div class="pincontent"><b>${esc(profiles[m.user_id]?.name||'?')}</b>: ${esc(content.slice(0,80))}</div>`;
   b.onclick = () => document.querySelector(`.m[data-id="${id}"]`)?.scrollIntoView({behavior:'smooth', block:'center'});
 }
 function startPinSub(){
-  sb.channel('roomupd-'+Date.now()).on('postgres_changes',{event:'UPDATE',schema:'public',table:'rooms'}, p => {
-    const r = roomList.find(x => x.id === p.new.id);
-    if (r) { Object.assign(r, p.new); }
-    if (room?.id === p.new.id) { room.pinned_id = p.new.pinned_id; drawPin(); }
-    drawRooms();
-  }).subscribe();
+  if (roomUpdChan) sb.removeChannel(roomUpdChan);
+  roomUpdChan = sb.channel('roomupd-'+Date.now())
+    .on('postgres_changes',{event:'UPDATE',schema:'public',table:'rooms'}, p => {
+      const r = roomList.find(x => x.id === p.new.id);
+      if (r) Object.assign(r, p.new);
+      if (room?.id === p.new.id) { room.pinned_id = p.new.pinned_id; drawPin(); }
+      drawRooms();
+    }).subscribe();
 }
 
-/* ─────────── GLOBAL ─────────── */
+/* ───── GLOBAL ───── */
 function startGlobal(){
-  const og = sb.channel('online', { config: { presence: { key: me.id } } });
-  og.on('presence', { event:'sync' }, () => {
-    onlineSet = new Set(Object.keys(og.presenceState()));
+  if (presenceChan) sb.removeChannel(presenceChan);
+  presenceChan = sb.channel('online', { config: { presence: { key: me.id } } });
+  presenceChan.on('presence', { event:'sync' }, () => {
+    onlineSet = new Set(Object.keys(presenceChan.presenceState()));
     drawRooms(); drawSub();
-  }).subscribe(s => { if (s === 'SUBSCRIBED') og.track({ t: Date.now() }); });
+  }).subscribe(s => { if (s === 'SUBSCRIBED') presenceChan.track({ t: Date.now() }); });
 
-  sb.channel('allmsgs').on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, p => {
+  if (globalChan) sb.removeChannel(globalChan);
+  globalChan = sb.channel('allmsgs').on('postgres_changes', { event:'INSERT', schema:'public', table:'messages' }, p => {
     if (!roomList.find(r => r.id === p.new.room_id)) { loadRooms(); return; }
     if (p.new.user_id === me.id) return;
-    lastMsgMap[p.new.room_id] = p.new.is_sticker ? '🖼️ Çıkartma' : p.new.content || `📎 ${p.new.file_name||'dosya'}`;
+    lastMsgMap[p.new.room_id] = p.new.is_sticker ? '🖼️ Çıkartma' : p.new.is_voice ? '🎤 Sesli mesaj' : (p.new.content?.startsWith('ENC:') ? '🔒 Şifreli mesaj' : p.new.content || '📎 dosya');
     const r = roomList.find(x => x.id === p.new.room_id);
     if (r) r.last_msg_at = p.new.created_at;
     roomList.sort((a,b) => Date.parse(b.last_msg_at||0) - Date.parse(a.last_msg_at||0));
-    if (room?.id !== p.new.room_id) {
-      unread[p.new.room_id] = (unread[p.new.room_id]||0) + 1;
-    }
+    if (room?.id !== p.new.room_id) unread[p.new.room_id] = (unread[p.new.room_id]||0) + 1;
     drawRooms();
   }).subscribe();
 }
@@ -1258,10 +1603,11 @@ function drawSub(){
     const online = onlineSet.has(other);
     $('#rSub').textContent = online ? '● çevrimiçi' : 'son görülme bilinmiyor';
     $('#rSub').classList.toggle('online', online);
-  } else {
-    $('#rSub').textContent = '';
+  } else if (room) {
+    const c = (members[room.id]||[]).length;
+    $('#rSub').textContent = `${c} üye${room.description ? ' • ' + room.description : ''}`;
     $('#rSub').classList.remove('online');
-  }
+  } else { $('#rSub').textContent = ''; }
 }
 function showTyping(name){
   $('#rSub').textContent = name + ' yazıyor...';
@@ -1272,16 +1618,12 @@ function showTyping(name){
 function markRead(){
   if (room) sb.from('room_reads').upsert({ room_id: room.id, user_id: me.id, read_at: new Date().toISOString() }).then(()=>{});
 }
-function drawSeen(){
-  $$('.tick').forEach(t => t.classList.add('read'));
-}
+function drawSeen(){ $$('.tick').forEach(t => t.classList.add('read')); }
 
-/* ─────────── ARAMA ─────────── */
+/* ───── ARAMA ───── */
 $('#searchMsgBtn').onclick = () => {
-  $('#searchQ').value = '';
-  $('#searchResults').innerHTML = '';
-  $('#mSearch').hidden = false;
-  $('#searchQ').focus();
+  $('#searchQ').value = ''; $('#searchResults').innerHTML = '';
+  $('#mSearch').hidden = false; $('#searchQ').focus();
 };
 let searchTimer = null;
 $('#searchQ').oninput = e => {
@@ -1296,11 +1638,11 @@ $('#searchQ').oninput = e => {
     $('#searchResults').innerHTML = data.map(m => {
       const r = roomList.find(x => x.id === m.room_id);
       const p = profiles[m.user_id];
-      const hl = esc(m.content||'').replace(new RegExp(`(${safe})`,'gi'), '<mark>$1</mark>');
+      const txt = m.content?.startsWith('ENC:') ? '🔒 [şifreli]' : (m.content || '');
+      const hl = esc(txt).replace(new RegExp(`(${safe})`,'gi'), '<mark>$1</mark>');
       return `<div class="sresult" data-r="${m.room_id}" data-m="${m.id}">
         <b>${esc(p?.name||'?')}</b><span class="where">${esc(r?label(r):'')}</span>
-        <div class="snippet">${hl}</div>
-        <small>${timeAgo(m.created_at)}</small>
+        <div class="snippet">${hl}</div><small>${timeAgo(m.created_at)}</small>
       </div>`;
     }).join('');
     $$('.sresult').forEach(el => el.onclick = async () => {
@@ -1314,25 +1656,25 @@ $('#searchQ').oninput = e => {
   }, 300);
 };
 
-/* ─────────── MODAL KAPATMA ─────────── */
+/* ───── MODAL KAPATMA ───── */
 $$('[data-close]').forEach(b => b.onclick = () => $('#'+b.dataset.close).hidden = true);
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     $$('.modal').forEach(m => m.hidden = true);
-    if (editing) { editing = null; $('#txt').value = ''; $('#txt').placeholder='Mesaj yaz...'; autoGrow(); }
+    ctxMenuEl.hidden = true;
+    if (editing) { editing = null; $('#txt').value=''; $('#txt').placeholder='Mesaj yaz...'; autoGrow(); }
   }
 });
 $$('.modal').forEach(m => m.onclick = e => { if (e.target === m) m.hidden = true; });
 
-/* ─────────── MOBİL GERİ ─────────── */
+/* ───── MOBİL GERİ ───── */
 $('#backBtn').onclick = () => {
   $('#app').classList.remove('inchat');
-  room = null;
+  room = null; roomKey = null;
 };
 
-/* ─────────── BAŞLANGIÇ ─────────── */
-setMode(true);
-autoGrow();
+/* ───── BAŞLANGIÇ ───── */
+setMode(true); autoGrow();
 </script>
 </body>
 </html>
