@@ -8,13 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--tg-blue:#2AABEE;--tg-blue-hover:#229ED9;--bg:#0F0F0F;--sidebar:#212121;--hover:#2C2C2C;--sent:#2B5278;--txt:#fff;--mut:#aaa;--line:#2c2c2c;--r-sm:14px;--r-md:14px;--r-lg:14px}
+:root{--tg-blue:#2AABEE;--tg-blue-hover:#229ED9;--bg:#0F0F0F;--sidebar:#212121;--hover:#2C2C2C;--sent:#2B5278;--txt:#fff;--mut:#aaa;--line:#2c2c2c;--r-md:14px}
 [data-theme="light"]{--bg:#F4F4F5;--sidebar:#fff;--hover:#f0f0f0;--sent:#EFFDDE;--txt:#0f0f0f;--mut:#707579;--line:#e6e6e6}
-/* Balon stilleri */
-[data-balloon="default"]{--r-sm:14px 14px 4px 14px;--r-md:14px}
-[data-balloon="round"]{--r-sm:20px;--r-md:20px}
-[data-balloon="sharp"]{--r-sm:6px 6px 2px 6px;--r-md:6px}
-[data-balloon="cloud"]{--r-sm:22px 22px 22px 6px;--r-md:22px}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;overflow:hidden;-webkit-tap-highlight-color:transparent}
 body{background:var(--bg);color:var(--txt);font:16px/1.4 Inter,system-ui,sans-serif}
@@ -43,11 +38,33 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 @keyframes floatUp{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(-60px) scale(1.6);opacity:0}}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes msgSlideIn{from{opacity:0;transform:translateY(12px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes callPulse{0%,100%{box-shadow:0 0 0 8px rgba(42,171,238,.15),0 0 0 20px rgba(42,171,238,.08)}50%{box-shadow:0 0 0 12px rgba(42,171,238,.2),0 0 0 30px rgba(42,171,238,.1)}}
 
 #toasts{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:var(--sidebar);border:1px solid var(--line);border-left:4px solid var(--tg-blue);padding:12px 16px;border-radius:12px;min-width:220px;max-width:340px;box-shadow:0 8px 24px #0005;animation:slideUp .3s;pointer-events:auto;cursor:pointer;font-size:14px}
 .toast.err{border-left-color:#ef4444}
 .toast.ok{border-left-color:#4ade80}
+
+#callScreen{position:fixed;inset:0;z-index:99999;background:linear-gradient(180deg,#1a2332 0%,#0a0a0a 100%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:60px 24px 40px;animation:fadeIn .3s;overflow:hidden}
+#callScreen .cav{width:130px;height:130px;border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:700;background:var(--tg-blue);box-shadow:0 0 0 8px rgba(42,171,238,.15),0 0 0 20px rgba(42,171,238,.08);animation:callPulse 2s infinite;overflow:hidden}
+#callScreen .cav img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+#callScreen .cname{font-size:26px;font-weight:700;text-align:center;margin:0}
+#callScreen .cstatus{font-size:15px;opacity:.7;text-align:center;margin-top:8px;min-height:20px}
+#callScreen .ctimer{font-size:22px;font-variant-numeric:tabular-nums;margin-top:10px;text-align:center;font-weight:600}
+#callButtonsIncoming,#callButtonsActive{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;max-width:340px;width:100%}
+.call-btn{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);color:#fff;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s;flex-shrink:0}
+.call-btn:hover{transform:scale(1.08);background:rgba(255,255,255,.25)}
+.call-btn:active{transform:scale(.95)}
+.call-btn svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.call-btn.hangup{background:#ef4444}
+.call-btn.hangup:hover{background:#dc2626}
+.call-btn.accept{background:#22c55e;animation:callPulse 1.5s infinite}
+.call-btn.accept:hover{background:#16a34a}
+.call-btn.reject{background:#ef4444}
+.call-btn.muted{background:#fff;color:#0f0f0f}
+.call-btn.muted svg{stroke:#0f0f0f}
+#callStatusIndicators{display:flex;gap:8px;margin-top:16px;justify-content:center;font-size:12px;opacity:.6}
+#callStatusIndicators span{padding:4px 10px;background:rgba(255,255,255,.08);border-radius:12px}
 
 #lockScreen{position:fixed;inset:0;background:var(--bg);z-index:99998;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;padding:20px}
 #lockScreen .logo{width:80px;height:80px;border-radius:50%;background:var(--tg-blue);display:flex;align-items:center;justify-content:center}
@@ -61,7 +78,6 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .pinPad button:hover{background:var(--hover)}
 .pinPad button:active{transform:scale(.95)}
 
-/* AUTH */
 #auth{height:100%;display:flex;align-items:center;justify-content:center;padding:20px}
 #auth .card{background:var(--sidebar);padding:32px 24px;border-radius:24px;width:100%;max-width:380px;display:grid;gap:14px;box-shadow:0 12px 48px #0005;border:1px solid var(--line);animation:popIn .4s}
 #auth .logo{width:72px;height:72px;border-radius:50%;background:var(--tg-blue);display:flex;align-items:center;justify-content:center;margin:0 auto}
@@ -78,7 +94,6 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 #err{color:#ff8a8a;font-size:13px;min-height:18px;text-align:center}
 #hint{font-size:12px;color:var(--mut);margin-top:-6px;padding-left:6px}
 
-/* APP */
 #app{height:100%;display:flex;overflow:hidden}
 #side{width:100%;max-width:380px;background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-width:0;flex-shrink:0}
 #side .head{padding:10px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
@@ -108,7 +123,7 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 #chat{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg);position:relative}
 [data-theme="dark"] #chat{background:#0a0a0a}
 [data-theme="light"] #chat{background:#e6ebee}
-#head{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--sidebar);border-bottom:1px solid var(--line);min-height:56px;z-index:2}
+#head{display:flex;align-items:center;gap:6px;padding:8px 14px;background:var(--sidebar);border-bottom:1px solid var(--line);min-height:56px;z-index:2}
 #head .back{padding:8px;margin-left:-6px;border-radius:50%}
 #head .info{flex:1;min-width:0}
 #head .htitle{font-weight:600;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -133,10 +148,6 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .m .mbub{background:var(--sidebar);padding:7px 12px;border-radius:var(--r-md);max-width:min(78%,560px);box-shadow:0 1px 2px #0002;position:relative;overflow-wrap:anywhere;min-width:0;transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
 .m:not(.me) .mbub{border-bottom-left-radius:4px}
 .m.me .mbub{background:var(--sent);border-bottom-left-radius:var(--r-md);border-bottom-right-radius:4px}
-[data-balloon="round"] .m .mbub{border-radius:20px!important}
-[data-balloon="sharp"] .m .mbub{border-radius:6px!important}
-[data-balloon="cloud"] .m:not(.me) .mbub{border-radius:22px 22px 22px 6px!important}
-[data-balloon="cloud"] .m.me .mbub{border-radius:22px 22px 6px 22px!important}
 [data-theme="dark"] .m.me .mbub{color:#fff}
 .m.grouped:not(.me) .mbub{border-top-left-radius:var(--r-md)}
 .m.grouped.me .mbub{border-top-right-radius:var(--r-md)}
@@ -286,11 +297,10 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 .balloon-opt b{font-size:13px}
 .balloon-preview{background:var(--sent);color:#fff;padding:6px 12px;border-radius:14px;font-size:12px;margin-bottom:6px;display:inline-block}
 [data-theme="light"] .balloon-preview{color:#0f0f0f}
-.bp-default{--r:14px 14px 4px 14px}
-.bp-round{--r:20px}
-.bp-sharp{--r:6px 6px 2px 6px}
-.bp-cloud{--r:22px 22px 22px 6px}
-.balloon-preview{border-radius:var(--r)}
+.bp-default{border-radius:14px 14px 4px 14px}
+.bp-round{border-radius:20px}
+.bp-sharp{border-radius:6px 6px 2px 6px}
+.bp-cloud{border-radius:22px 22px 22px 6px}
 
 @media(min-width:900px){#side{max-width:360px}#head .back{display:none}}
 @media(max-width:899px){
@@ -301,13 +311,46 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
 }
 </style>
 </head>
-<body data-balloon="default">
+<body>
 
 <div id="toasts"></div>
 
+<!-- SESLİ ARAMA -->
+<div id="callScreen" hidden>
+  <div style="text-align:center">
+    <div class="cav" id="callAvatar"></div>
+    <h2 class="cname" id="callName">—</h2>
+    <div class="cstatus" id="callStatus">Aranıyor...</div>
+    <div class="ctimer" id="callTimer" style="display:none">00:00</div>
+    <div id="callStatusIndicators" hidden>
+      <span id="callMuteInd" hidden>🔇 Sessiz</span>
+      <span id="callSpeakerInd" hidden>🔊 Hoparlör</span>
+    </div>
+  </div>
+  <div id="callButtonsIncoming" hidden>
+    <button class="call-btn reject" id="callReject" title="Reddet">
+      <svg viewBox="0 0 24 24" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </button>
+    <button class="call-btn accept" id="callAccept" title="Aç">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </button>
+  </div>
+  <div id="callButtonsActive" hidden>
+    <button class="call-btn" id="callMuteBtn" title="Sessiz">
+      <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    </button>
+    <button class="call-btn" id="callSpeakerBtn" title="Hoparlör">
+      <svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+    </button>
+    <button class="call-btn hangup" id="callHangupBtn" title="Kapat">
+      <svg viewBox="0 0 24 24" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </button>
+  </div>
+</div>
+
 <!-- EKRAN KİLİDİ -->
 <div id="lockScreen" hidden>
-  <div class="logo"><svg viewBox="0 0 24 24" width="36" height="36" fill="#fff"><rect x="3" y="11" width="18" height="11" rx="2" fill="#fff"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="#2AABEE" stroke-width="2" fill="none"/></svg></div>
+  <div class="logo"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
   <h2>Ekran Kilitli</h2>
   <p>Devam etmek için PIN kodunu gir</p>
   <div class="pinDots" id="pinDots"></div>
@@ -352,6 +395,9 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
         <div class="htitle" id="rTitle"></div>
         <div class="hsub" id="rSub"></div>
       </div>
+      <button class="hbtn" id="callBtn" hidden title="Sesli ara">
+        <svg class="ico" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </button>
       <button class="hbtn" id="chatMenuBtn"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg></button>
     </div>
 
@@ -530,7 +576,7 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
   </div>
 </div>
 
-<!-- GÜVENLİK AYARLARI -->
+<!-- GÜVENLİK -->
 <div class="modal" id="mSecurity" hidden>
   <div class="mbox">
     <div class="mhead"><h3>Güvenlik</h3><button data-close="mSecurity"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -538,11 +584,9 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
       <div style="font-size:14px;color:var(--mut)">Ekran kilidi (PIN)</div>
       <div id="pinStatus"></div>
       <button class="btn" id="pinToggle">PIN Ayarla</button>
-      
       <div style="font-size:14px;color:var(--mut);margin-top:10px">İki adımlı doğrulama</div>
       <div id="twoFAStatus" style="font-size:13px;color:var(--mut)">Kapalı</div>
       <button class="btn ghost" id="twoFAToggle">İki Adımlı Doğrulamayı Aç</button>
-      
       <div style="font-size:14px;color:var(--mut);margin-top:10px">Engellenen kullanıcılar</div>
       <div id="blockedList"></div>
     </div>
@@ -556,13 +600,13 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
     <div class="mbody">
       <p style="font-size:14px;color:var(--mut);margin:0">4 haneli PIN kodunu gir:</p>
       <input class="fld-modal" id="pinInput" type="tel" maxlength="4" inputmode="numeric" placeholder="••••" style="text-align:center;font-size:24px;letter-spacing:12px">
-      <p style="font-size:12px;color:var(--mut);margin:0" id="pinHelp">PIN kodu uygulamayı kilitler. Unutursan çıkış yapman gerekir.</p>
+      <p style="font-size:12px;color:var(--mut);margin:0" id="pinHelp">PIN kodu uygulamayı kilitler.</p>
       <button class="btn" id="pinSave">Kaydet</button>
     </div>
   </div>
 </div>
 
-<!-- CİHAZ YÖNETİMİ -->
+<!-- CİHAZLAR -->
 <div class="modal" id="mDevices" hidden>
   <div class="mbox">
     <div class="mhead"><h3>Bağlı Cihazlar</h3><button data-close="mDevices"><svg class="ico" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
@@ -582,6 +626,7 @@ input,textarea{background:transparent;border:0;outline:none;width:100%}
         <div class="pc-bio" id="pcBio"></div>
       </div>
       <button class="btn" id="pcDM">Mesaj Gönder</button>
+      <button class="btn ghost" id="pcCall">📞 Sesli Ara</button>
       <button class="btn danger" id="pcBlock">Engelle</button>
     </div>
   </div>
@@ -657,7 +702,11 @@ let ctxMsg=null, ctxMenuEl=$('#ctxmenu');
 let currentTab='all';
 let currentAudio=null, currentPlayBtn=null;
 let pinBuffer='';
-let pinMode='lock'; // lock, set
+let pinMode='lock';
+let pc=null, localStream=null, remoteAudio=null;
+let callState='idle', callPeer=null, callChannel=null;
+let callStartTime=null, callTimer=null, incomingOffer=null;
+let ringtoneCtx=null, ringtoneInterval=null, callMuted=false, speakerOn=false, callTimeout=null;
 
 const icon = (name, cls='ico') => {
   const icons = {
@@ -666,8 +715,7 @@ const icon = (name, cls='ico') => {
     trash:'<polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
     smile:'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
     play:'<polygon points="5 3 19 12 5 21"/>',
-    pause:'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
-    userx:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="17" y1="8" x2="23" y2="14"/><line x1="23" y1="8" x2="17" y2="14"/>'
+    pause:'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>'
   };
   return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${icons[name]||''}</svg>`;
 };
@@ -779,7 +827,6 @@ function toast(msg, kind='', ms=3500){
 }
 window.alert = m => toast(m, 'err');
 
-/* TEMA */
 const savedTheme = localStorage.getItem('cf_theme') || 'dark';
 document.documentElement.dataset.theme = savedTheme;
 function updateThemeLabel(){
@@ -788,12 +835,6 @@ function updateThemeLabel(){
   if (el) el.textContent = dark ? 'Aydınlık moda geç' : 'Karanlık moda geç';
 }
 updateThemeLabel();
-
-/* BALON STİLİ */
-function applyBalloon(style){
-  document.body.dataset.balloon = style || 'default';
-  $$('#balloonPicker .balloon-opt').forEach(b => b.classList.toggle('on', b.dataset.style === style));
-}
 
 /* AUTH */
 function setMode(s){
@@ -820,7 +861,6 @@ $('#af').onsubmit = async e => {
   if (signup && !nm) return $('#err').textContent = 'Adını yaz.';
   $('#err').textContent = '';
   $('#agobtn').disabled = true; $('#agobtn').textContent = '...';
-
   if (signup) {
     const { data: exists } = await sb.rpc('username_exists', {uname});
     if (exists) { $('#err').textContent = 'Bu kullanıcı adı alınmış.'; $('#agobtn').disabled = false; setMode(signup); return; }
@@ -843,7 +883,7 @@ sb.auth.onAuthStateChange((_e, session) => {
   if (session) { me = session.user; if (!booted) { booted = true; setTimeout(boot,0); } }
   else {
     booted = false; me = null;
-    [chan,globalChan,presenceChan,roomUpdChan].forEach(c => c && sb.removeChannel(c));
+    [chan,globalChan,presenceChan,roomUpdChan,callChannel].forEach(c => c && sb.removeChannel(c));
     $('#app').hidden = true; $('#auth').hidden = false;
   }
 });
@@ -870,23 +910,30 @@ async function boot(){
       else { prof.username = uname; toast('@'+uname, 'ok'); }
     }
   }
-  applyBalloon(prof.balloon_style);
   await loadRooms();
   await loadPinnedChats();
   await loadBlocked();
   startGlobal();
   startPinSub();
+  setupCallSignaling();
   drawTabs();
   registerDevice();
   await handleUrlParams();
   if ('Notification' in window && Notification.permission === 'default')
     setTimeout(() => Notification.requestPermission(), 3000);
+  // PIN kontrolü
+  const { data: p } = await sb.from('profiles').select('pin_enabled').eq('id', me.id).single();
+  if (p?.pin_enabled) {
+    $('#lockScreen').hidden = false;
+    $('#app').hidden = true;
+    pinMode = 'lock'; pinBuffer = '';
+    updatePinDots();
+  }
 }
 
 async function registerDevice(){
   const sessionId = localStorage.getItem('cf_session_id') || crypto.randomUUID();
   localStorage.setItem('cf_session_id', sessionId);
-  const info = navigator.userAgent.includes('Mobile') ? 'Mobil Tarayıcı' : 'Masaüstü Tarayıcı';
   const ua = navigator.userAgent;
   let name = 'Bilinmeyen Cihaz';
   if (/iPhone|iPad/.test(ua)) name = 'iOS Cihaz';
@@ -1072,7 +1119,7 @@ async function togglePinChat(rid){
 }
 $('#searchIn').oninput = drawRooms;
 
-/* ANA MENÜ */
+/* MENU */
 $('#menuBtn').onclick = () => { updateThemeLabel(); $('#actionSheet').hidden = false; };
 $$('#actionSheet .act-btn').forEach(b => b.onclick = () => {
   $('#actionSheet').hidden = true;
@@ -1142,7 +1189,6 @@ $('#newCreate').onclick = async () => {
   if (r) openRoom(r);
 };
 
-/* JOIN */
 $('#joinGo').onclick = async () => {
   const raw = $('#joinInput').value.trim();
   if (!raw) return;
@@ -1170,7 +1216,6 @@ $('#joinGo').onclick = async () => {
   toast('Link veya kod geçersiz', 'err');
 };
 
-/* DM */
 async function openDMModal(){
   await loadProfiles();
   const others = Object.values(profiles).filter(p => p.id !== me.id && !blockedSet.has(p.id));
@@ -1196,6 +1241,7 @@ async function openRoom(r){
   $('#chatSettings').hidden = !(r.created_by === me.id && !r.is_dm);
   $('#chatLeave').hidden = !!r.is_dm;
   $('#chatInvite').hidden = !!r.is_dm;
+  $('#callBtn').hidden = !r.is_dm;
   unread[r.id] = 0;
   drawRooms();
   if (chan) { sb.removeChannel(chan); chan = null; }
@@ -1319,18 +1365,15 @@ function buildMsg(m, prev){
   const div = document.createElement('div');
   div.className = 'm' + (mine?' me':'') + (grouped?' grouped':'') + (m.is_sticker?' stk':'');
   div.dataset.id = m.id; div.dataset.ts = m.created_at; div.dataset.uid = m.user_id;
-
   let content = m.content || '';
   const isEnc = content.startsWith('ENC:');
   const isDeleted = m.is_deleted;
-
   const replyHtml = m.reply_to ? `<div class="quote" data-rid="${m.reply_to}"><b></b><div></div></div>` : '';
   const rx = reactions[m.id] || [];
   const rxGroups = {};
   rx.forEach(x => { rxGroups[x.emoji] = rxGroups[x.emoji] || {count:0,mine:false}; rxGroups[x.emoji].count++; if (x.user_id === me.id) rxGroups[x.emoji].mine = true; });
   const reactsHtml = Object.entries(rxGroups).map(([e,v]) => `<button class="rchip${v.mine?' mine':''}" data-e="${esc(e)}">${esc(e)} ${v.count}</button>`).join('');
   const dayHtml = showDay ? `<div class="daydiv"><span>${esc(dayLabel(m.created_at))}</span></div>` : '';
-
   let mediaHtml = '';
   if (!isDeleted) {
     if (m.image_url || m.extra_images?.length) {
@@ -1341,12 +1384,10 @@ function buildMsg(m, prev){
     else if (m.file_url && m.is_voice) mediaHtml = `<div class="voice"><button data-play="${esc(m.file_url)}">${icon('play','ico sm')}</button><div class="wave">${Array.from({length:20}).map(()=>`<div class="bar" style="height:${30+Math.random()*60}%"></div>`).join('')}</div><div class="dur">${fmtDur(m.duration||0)}</div></div>`;
     else if (m.file_url) mediaHtml = `<a class="file" href="${esc(m.file_url)}" target="_blank" rel="noopener">📎 ${esc(m.file_name||'dosya')}</a>`;
   }
-
   const fwdHtml = m.forwarded_from ? `<div style="font-size:11.5px;color:var(--tg-blue);font-weight:600;margin-bottom:3px;font-style:italic">↪️ ${esc(m.forwarded_from)} kişisinden iletildi</div>` : '';
   const contentHtml = isDeleted 
     ? `<div class="deleted">🚫 Bu mesaj silindi</div>`
     : (content ? `<div class="content">${isEnc?'🔐 ':''}${formatContent(content)}</div>` : '');
-
   div.innerHTML = `
     ${dayHtml}
     <div class="swipe-icon">${icon('reply','ico')}</div>
@@ -1361,7 +1402,6 @@ function buildMsg(m, prev){
       </div>
       ${reactsHtml ? `<div class="reacts">${reactsHtml}</div>` : ''}
     </div>`;
-
   if (m.reply_to && !isDeleted) {
     const q = div.querySelector('.quote');
     const target = document.querySelector(`.m[data-id="${m.reply_to}"]`);
@@ -1372,7 +1412,6 @@ function buildMsg(m, prev){
       q.onclick = () => target.scrollIntoView({behavior:'smooth', block:'center'});
     } else { q.querySelector('b').textContent='Yanıt'; q.querySelector('div').textContent='(silinmiş)'; }
   }
-
   div.querySelector('.mav')?.addEventListener('click', () => { if (p) showUserProfile(p.id); });
   div.querySelectorAll('.rchip').forEach(c => c.onclick = (e) => { e.stopPropagation(); toggleReaction(m.id, c.dataset.e); });
   div.querySelectorAll('.img').forEach(im => im.addEventListener('click', e => openImgViewer(e.target.src)));
@@ -1439,7 +1478,6 @@ mic.addEventListener('touchend', e => { e.preventDefault(); stopRec(true); });
 $('#recCancel').onclick = () => stopRec(false);
 $('#recStop').onclick = () => stopRec(true);
 
-/* CONTEXT */
 function openCtxMenu(msgDiv, m){
   const mine = m.user_id === me.id;
   ctxMsg = m;
@@ -1481,7 +1519,6 @@ async function handleCtx(a){
 }
 document.addEventListener('click', e => { if (!ctxMenuEl.contains(e.target) && !e.target.closest('.room')) ctxMenuEl.hidden = true; });
 
-/* REACTIONS */
 function drawReactions(mid){
   const div = document.querySelector(`.m[data-id="${mid}"]`); if (!div) return;
   const bub = div.querySelector('.mbub');
@@ -1522,7 +1559,6 @@ function toggleEmojiPicker(msgDiv, m){
 }
 const scrollDown = (smooth) => { const c = $('#msgs'); c.scrollTo({top:c.scrollHeight, behavior:smooth?'smooth':'auto'}); };
 
-/* REPLY/SEND */
 function setReply(m){
   replyTo = m;
   $('#rw').textContent = profiles[m.user_id]?.name || '?';
@@ -1605,7 +1641,6 @@ $('#fImg').onchange = async e => {
   else await sb.from('messages').insert({room_id: room.id, user_id: me.id, content: null, image_url: urls[0], extra_images: urls.slice(1)});
 };
 
-/* EMOJI */
 const EMOJIS = ['😀','😂','🥰','😎','🤔','😢','😮','😡','👍','👎','❤️','🔥','🎉','🙏','👏','💯','✨','💪','🥳','😴','🤗','😇','🤩','😋','🍕','☕','⚽','🎮','📱','💻','🌙','☀️','⭐','🌈','💧','🌸'];
 $('#emojiBtn').onclick = () => {
   const p = $('#epicker');
@@ -1616,7 +1651,6 @@ $('#emojiBtn').onclick = () => {
   } else p.hidden = true;
 };
 
-/* PROFILE */
 function drawPav(){
   const div = $('#pav');
   if (newAvatar) div.innerHTML = `<img class="av" style="width:96px;height:96px" src="${URL.createObjectURL(newAvatar)}">`;
@@ -1628,13 +1662,15 @@ function openProfileModal(){
   $('#pusername').value = prof.username || '';
   $('#unameStatus').textContent = prof.username ? `@${prof.username}` : '';
   drawPav();
-  applyBalloon(prof.balloon_style || 'default');
-  $$('#balloonPicker .balloon-opt').forEach(b => b.onclick = async () => {
-    const style = b.dataset.style;
-    applyBalloon(style);
-    await sb.from('profiles').update({balloon_style: style}).eq('id', me.id);
-    prof.balloon_style = style;
-    toast('Stil kaydedildi', 'ok');
+  $$('#balloonPicker .balloon-opt').forEach(b => {
+    b.classList.toggle('on', b.dataset.style === (prof.balloon_style||'default'));
+    b.onclick = async () => {
+      const style = b.dataset.style;
+      $$('#balloonPicker .balloon-opt').forEach(x => x.classList.toggle('on', x === b));
+      await sb.from('profiles').update({balloon_style: style}).eq('id', me.id);
+      prof.balloon_style = style;
+      toast('Stil kaydedildi', 'ok');
+    };
   });
   $('#mProfile').hidden = false;
 }
@@ -1667,7 +1703,6 @@ $('#psave').onclick = async () => {
 };
 $('#logoutBtn').onclick = () => { $('#mProfile').hidden = true; sb.auth.signOut(); };
 
-/* KULLANICI PROFİL */
 function showUserProfile(uid){
   const p = profiles[uid]; if (!p) return;
   $('#pcAvatar').innerHTML = avatar(p, 96);
@@ -1675,6 +1710,7 @@ function showUserProfile(uid){
   $('#pcUsername').textContent = p.username ? '@' + p.username : '';
   $('#pcBio').textContent = p.bio || '';
   $('#pcDM').style.display = uid === me.id ? 'none' : '';
+  $('#pcCall').style.display = uid === me.id ? 'none' : '';
   $('#pcBlock').style.display = uid === me.id ? 'none' : '';
   const isBlocked = blockedSet.has(uid);
   $('#pcBlock').textContent = isBlocked ? 'Engeli Kaldır' : 'Engelle';
@@ -1683,7 +1719,7 @@ function showUserProfile(uid){
       await sb.from('blocked_users').delete().eq('blocker_id', me.id).eq('blocked_id', uid);
       blockedSet.delete(uid); toast('Engel kaldırıldı', 'ok');
     } else {
-      if (!confirm(p.name + ' engellensin mi? Mesajlarını göremezsin.')) return;
+      if (!confirm(p.name + ' engellensin mi?')) return;
       await sb.from('blocked_users').insert({blocker_id: me.id, blocked_id: uid});
       blockedSet.add(uid); toast('Engellendi', 'ok');
     }
@@ -1697,10 +1733,13 @@ function showUserProfile(uid){
     const r = roomList.find(x => x.id === data.id);
     if (r) openRoom(r);
   };
+  $('#pcCall').onclick = () => {
+    $('#mUser').hidden = true;
+    startCall(uid);
+  };
   $('#mUser').hidden = false;
 }
 
-/* CHAT MENU */
 $('#chatMenuBtn').onclick = () => { $('#chatSheet').hidden = false; };
 $$('#chatSheet .act-btn').forEach(b => b.onclick = () => {
   $('#chatSheet').hidden = true;
@@ -1818,8 +1857,6 @@ $('#leaveBtn').onclick = leaveRoom;
 /* GÜVENLİK */
 async function openSecurity(){
   await loadBlocked();
-  const { data: pinData } = await sb.rpc('verify_pin', {pin_text: 'anything'});
-  // prof.pin_enabled kontrol
   const { data: p } = await sb.from('profiles').select('pin_enabled').eq('id', me.id).single();
   const pinEnabled = p?.pin_enabled;
   $('#pinStatus').innerHTML = pinEnabled
@@ -1844,7 +1881,6 @@ async function openSecurity(){
     : '<span style="color:var(--mut);font-size:13px">Kapalı - PIN ayarla</span>';
   $('#twoFAToggle').textContent = pinEnabled ? 'İki Adımlı Doğrulamayı Kapat' : 'İki Adımlı Doğrulamayı Aç';
   $('#twoFAToggle').onclick = () => $('#pinToggle').click();
-  // Engellenenler
   if (!blockedSet.size) { $('#blockedList').innerHTML = '<div style="font-size:13px;color:var(--mut)">Kimseyi engellemedin</div>'; }
   else {
     $('#blockedList').innerHTML = [...blockedSet].map(uid => {
@@ -1866,10 +1902,9 @@ $('#pinSave').onclick = async () => {
   toast('✓ PIN kaydedildi', 'ok');
   $('#mPin').hidden = true;
   $('#mSecurity').hidden = true;
-  localStorage.setItem('cf_pin_locked', '1');
 };
 
-/* CİHAZ YÖNETİMİ */
+/* CİHAZLAR */
 async function openDevices(){
   const { data } = await sb.from('user_devices').select('*').eq('user_id', me.id).order('last_seen',{ascending:false});
   const currentSession = localStorage.getItem('cf_session_id');
@@ -1894,7 +1929,7 @@ async function openDevices(){
   $('#mDevices').hidden = false;
 }
 
-/* EKRAN KİLİDİ */
+/* PIN LOCK */
 function renderPinPad(){
   const nums = ['1','2','3','4','5','6','7','8','9','⌫','0','✓'];
   $('#pinPad').innerHTML = nums.map(n => `<button data-n="${n}">${n}</button>`).join('');
@@ -1923,8 +1958,279 @@ async function submitPin(){
   }
   pinBuffer = '';
   $('#lockScreen').hidden = true;
-  localStorage.removeItem('cf_pin_locked');
+  $('#app').hidden = false;
 }
+
+/* ═══════ SESLİ ARAMA ═══════ */
+function initAudioEl(){
+  if (!remoteAudio) {
+    remoteAudio = document.createElement('audio');
+    remoteAudio.autoplay = true;
+    remoteAudio.setAttribute('playsinline', '');
+    document.body.appendChild(remoteAudio);
+  }
+}
+function playRingtone(){
+  stopRingtone();
+  try {
+    ringtoneCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const beep = () => {
+      const osc = ringtoneCtx.createOscillator();
+      const gain = ringtoneCtx.createGain();
+      osc.connect(gain); gain.connect(ringtoneCtx.destination);
+      osc.frequency.value = 500;
+      gain.gain.setValueAtTime(0.0001, ringtoneCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.15, ringtoneCtx.currentTime + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ringtoneCtx.currentTime + 0.5);
+      osc.start(); osc.stop(ringtoneCtx.currentTime + 0.5);
+    };
+    beep();
+    ringtoneInterval = setInterval(beep, 1500);
+  } catch(e){}
+}
+function stopRingtone(){
+  if (ringtoneInterval) { clearInterval(ringtoneInterval); ringtoneInterval = null; }
+  if (ringtoneCtx) { try { ringtoneCtx.close(); } catch(e){} ringtoneCtx = null; }
+}
+function updateCallUI(){
+  const cs = $('#callScreen');
+  if (callState === 'idle') { cs.hidden = true; stopRingtone(); return; }
+  cs.hidden = false;
+  const p = profiles[callPeer];
+  $('#callAvatar').innerHTML = p?.avatar_url
+    ? `<img src="${esc(p.avatar_url)}">`
+    : esc((p?.name||'?')[0].toUpperCase());
+  $('#callName').textContent = p?.name || '—';
+  $('#callButtonsIncoming').hidden = callState !== 'incoming';
+  $('#callButtonsActive').hidden = callState !== 'active' && callState !== 'outgoing';
+  if (callState === 'outgoing') {
+    $('#callStatus').textContent = 'Aranıyor...';
+    $('#callTimer').style.display = 'none';
+    $('#callMuteBtn').style.display = 'none';
+    $('#callSpeakerBtn').style.display = 'none';
+    playRingtone();
+  } else if (callState === 'incoming') {
+    $('#callStatus').textContent = 'Gelen arama';
+    $('#callTimer').style.display = 'none';
+  } else if (callState === 'active') {
+    $('#callStatus').textContent = 'Konuşuluyor';
+    $('#callTimer').style.display = 'block';
+    $('#callMuteBtn').style.display = '';
+    $('#callSpeakerBtn').style.display = '';
+    stopRingtone();
+  }
+  $('#callStatusIndicators').hidden = callState !== 'active';
+}
+async function createPC(peerId){
+  pc = new RTCPeerConnection({
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      { urls: 'stun:stun1.l.google.com:19302' },
+      { urls: 'stun:stun.cloudflare.com:3478' }
+    ]
+  });
+  if (localStream) localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
+  pc.onicecandidate = (event) => {
+    if (event.candidate && callChannel) {
+      callChannel.send({
+        type: 'broadcast', event: 'call-ice',
+        payload: { from: me.id, to: peerId, candidate: event.candidate }
+      });
+    }
+  };
+  pc.ontrack = (event) => {
+    initAudioEl();
+    remoteAudio.srcObject = event.streams[0];
+    remoteAudio.play().catch(()=>{});
+  };
+  pc.onconnectionstatechange = () => {
+    if (pc.connectionState === 'connected' && callState === 'outgoing') {
+      callState = 'active';
+      callStartTime = Date.now();
+      startCallTimer();
+      updateCallUI();
+    }
+    if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+      if (callState !== 'idle') endCall('Bağlantı koptu');
+    }
+  };
+  return pc;
+}
+async function startCall(peerId){
+  if (callState !== 'idle') return toast('Zaten bir arama var', 'err');
+  if (!peerId) return toast('Kullanıcı bulunamadı', 'err');
+  callPeer = peerId;
+  callState = 'outgoing';
+  updateCallUI();
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch(e) {
+    callState = 'idle'; updateCallUI();
+    return toast('Mikrofon izni gerekli', 'err');
+  }
+  await createPC(peerId);
+  const offer = await pc.createOffer({ offerToReceiveAudio: true });
+  await pc.setLocalDescription(offer);
+  callChannel.send({
+    type: 'broadcast', event: 'call-offer',
+    payload: { from: me.id, fromName: prof.name, to: peerId, sdp: pc.localDescription }
+  });
+  callTimeout = setTimeout(() => {
+    if (callState === 'outgoing') endCall('Cevap verilmedi');
+  }, 45000);
+}
+async function acceptCall(){
+  if (callState !== 'incoming' || !incomingOffer) return;
+  stopRingtone();
+  if (callTimeout) { clearTimeout(callTimeout); callTimeout = null; }
+  try {
+    localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch(e) { rejectCall('Mikrofon izni yok'); return; }
+  callState = 'active';
+  await createPC(callPeer);
+  await pc.setRemoteDescription(new RTCSessionDescription(incomingOffer));
+  const answer = await pc.createAnswer();
+  await pc.setLocalDescription(answer);
+  callChannel.send({
+    type: 'broadcast', event: 'call-answer',
+    payload: { from: me.id, to: callPeer, sdp: pc.localDescription }
+  });
+  callStartTime = Date.now();
+  startCallTimer();
+  updateCallUI();
+}
+function rejectCall(reason){
+  if (callPeer && callChannel) {
+    callChannel.send({
+      type: 'broadcast', event: 'call-reject',
+      payload: { from: me.id, to: callPeer, reason: reason || 'Reddedildi' }
+    });
+  }
+  cleanupCall();
+}
+function endCall(message){
+  if (callPeer && callChannel) {
+    callChannel.send({
+      type: 'broadcast', event: 'call-end',
+      payload: { from: me.id, to: callPeer, duration: callStartTime ? Math.floor((Date.now()-callStartTime)/1000) : 0 }
+    });
+    if (callStartTime) {
+      sb.from('call_logs').insert({
+        caller_id: callState === 'outgoing' ? me.id : callPeer,
+        callee_id: callState === 'outgoing' ? callPeer : me.id,
+        status: 'answered',
+        duration: Math.floor((Date.now()-callStartTime)/1000)
+      }).then(()=>{});
+    }
+  }
+  if (message) toast(message, 'err');
+  cleanupCall();
+}
+function cleanupCall(){
+  if (localStream) { localStream.getTracks().forEach(t => t.stop()); localStream = null; }
+  if (pc) { try { pc.close(); } catch(e){} pc = null; }
+  if (remoteAudio) remoteAudio.srcObject = null;
+  if (callTimer) { clearInterval(callTimer); callTimer = null; }
+  if (callTimeout) { clearTimeout(callTimeout); callTimeout = null; }
+  stopRingtone();
+  callState = 'idle'; callPeer = null; incomingOffer = null; callStartTime = null;
+  callMuted = false; speakerOn = false;
+  $('#callMuteBtn')?.classList.remove('muted');
+  $('#callMuteInd').hidden = true;
+  $('#callSpeakerInd').hidden = true;
+  updateCallUI();
+}
+function startCallTimer(){
+  if (callTimer) clearInterval(callTimer);
+  $('#callTimer').style.display = 'block';
+  callTimer = setInterval(() => {
+    if (!callStartTime) return;
+    const s = Math.floor((Date.now()-callStartTime)/1000);
+    $('#callTimer').textContent = fmtDur(s);
+  }, 500);
+}
+function setupCallSignaling(){
+  if (callChannel) return;
+  callChannel = sb.channel('calls-' + me.id);
+  callChannel
+    .on('broadcast', { event: 'call-offer' }, async ({ payload }) => {
+      if (payload.to !== me.id) return;
+      if (callState !== 'idle') {
+        callChannel.send({ type:'broadcast', event:'call-reject',
+          payload: { from: me.id, to: payload.from, reason: 'Meşgul' }});
+        return;
+      }
+      if (blockedSet.has(payload.from)) {
+        callChannel.send({ type:'broadcast', event:'call-reject',
+          payload: { from: me.id, to: payload.from, reason: 'Reddedildi' }});
+        return;
+      }
+      callPeer = payload.from;
+      incomingOffer = payload.sdp;
+      callState = 'incoming';
+      updateCallUI();
+      playRingtone();
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 200]);
+      callTimeout = setTimeout(() => {
+        if (callState === 'incoming') rejectCall('Cevap verilmedi');
+      }, 45000);
+    })
+    .on('broadcast', { event: 'call-answer' }, async ({ payload }) => {
+      if (payload.to !== me.id || callState !== 'outgoing') return;
+      if (callTimeout) { clearTimeout(callTimeout); callTimeout = null; }
+      try {
+        await pc.setRemoteDescription(new RTCSessionDescription(payload.sdp));
+        callState = 'active';
+        callStartTime = Date.now();
+        startCallTimer();
+        updateCallUI();
+      } catch(e){ console.warn(e); }
+    })
+    .on('broadcast', { event: 'call-ice' }, async ({ payload }) => {
+      if (payload.to !== me.id || !pc) return;
+      try { await pc.addIceCandidate(new RTCIceCandidate(payload.candidate)); } catch(e){}
+    })
+    .on('broadcast', { event: 'call-reject' }, ({ payload }) => {
+      if (payload.to !== me.id) return;
+      toast('📞 Arama reddedildi: ' + (payload.reason||''), 'err');
+      if (callStartTime === null && callState === 'outgoing') {
+        sb.from('call_logs').insert({
+          caller_id: me.id, callee_id: payload.from, status: 'rejected'
+        }).then(()=>{});
+      }
+      cleanupCall();
+    })
+    .on('broadcast', { event: 'call-end' }, ({ payload }) => {
+      if (payload.to !== me.id) return;
+      toast('📞 Arama sonlandı');
+      cleanupCall();
+    })
+    .subscribe();
+}
+$('#callBtn')?.addEventListener('click', () => {
+  if (!room || !room.is_dm) return;
+  const other = otherId(room);
+  if (!other) return;
+  startCall(other);
+});
+$('#callAccept')?.addEventListener('click', acceptCall);
+$('#callReject')?.addEventListener('click', () => rejectCall('Reddedildi'));
+$('#callHangupBtn')?.addEventListener('click', () => endCall());
+$('#callMuteBtn')?.addEventListener('click', () => {
+  if (!localStream) return;
+  callMuted = !callMuted;
+  localStream.getAudioTracks().forEach(t => t.enabled = !callMuted);
+  $('#callMuteBtn').classList.toggle('muted', callMuted);
+  $('#callMuteInd').hidden = !callMuted;
+});
+$('#callSpeakerBtn')?.addEventListener('click', () => {
+  if (!remoteAudio) return;
+  speakerOn = !speakerOn;
+  remoteAudio.volume = speakerOn ? 1 : 0.4;
+  $('#callSpeakerBtn').classList.toggle('muted', speakerOn);
+  $('#callSpeakerInd').hidden = !speakerOn;
+  toast(speakerOn ? '🔊 Hoparlör açık' : '🔉 Hoparlör kısık', '', 1200);
+});
 
 /* SEARCH */
 let searchTimer = null;
@@ -1952,7 +2258,6 @@ $('#searchQ').oninput = e => {
   }, 300);
 };
 
-/* CLOSE */
 $$('[data-close]').forEach(b => b.onclick = () => $('#'+b.dataset.close).hidden = true);
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -1965,7 +2270,6 @@ $$('.modal').forEach(m => m.onclick = e => { if (e.target === m) m.hidden = true
 
 $('#backBtn').onclick = () => { $('#app').classList.remove('inchat'); room = null; roomKey = null; };
 
-/* GLOBAL */
 function startGlobal(){
   if (presenceChan) sb.removeChannel(presenceChan);
   presenceChan = sb.channel('online', {config: {presence: {key: me.id}}});
@@ -1973,7 +2277,6 @@ function startGlobal(){
     onlineSet = new Set(Object.keys(presenceChan.presenceState()));
     drawRooms(); drawSub();
   }).subscribe(s => { if (s === 'SUBSCRIBED') presenceChan.track({t: Date.now()}); });
-
   if (globalChan) sb.removeChannel(globalChan);
   globalChan = sb.channel('allmsgs').on('postgres_changes', {event:'INSERT', schema:'public', table:'messages'}, p => {
     if (!roomList.find(r => r.id === p.new.room_id)) { loadRooms(); return; }
@@ -2005,22 +2308,7 @@ function showTyping(name){
 }
 function markRead(){ if (room) sb.from('room_reads').upsert({room_id: room.id, user_id: me.id, read_at: new Date().toISOString()}).then(()=>{}); }
 
-/* BAŞLAT */
 setMode(true); autoGrow(); renderPinPad();
-
-// Ekran kilidi kontrolü — giriş sonrası
-const origBoot = boot;
-boot = async function(){
-  await origBoot();
-  // PIN açıksa kilitle
-  const { data: p } = await sb.from('profiles').select('pin_enabled').eq('id', me.id).single();
-  if (p?.pin_enabled) {
-    $('#lockScreen').hidden = false;
-    $('#app').hidden = true;
-    pinMode = 'lock'; pinBuffer = '';
-    updatePinDots();
-  }
-};
 </script>
 </body>
 </html>
